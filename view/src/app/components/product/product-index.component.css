@@ -1,0 +1,88 @@
+/* Product Index Component Styles */
+.category-menu li {
+  cursor: pointer;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.category-menu li:hover {
+  color: #d70018;
+  font-weight: bold;
+}
+
+.nav-categories {
+  background: #fff;
+  padding: 10px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.nav-categories a {
+  color: #333;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.nav-categories a:hover {
+  color: #d70018;
+  background-color: #f8f9fa;
+}
+
+.top-banner {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  font-weight: bold;
+}
+
+.card {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+  border-radius: 10px 10px 0 0;
+}
+
+.btn-primary {
+  background-color: #d70018;
+  border-color: #d70018;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background-color: #b60014;
+  border-color: #b60014;
+}
+
+.btn-outline-secondary {
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.text-danger {
+  color: #d70018 !important;
+}
+
+.text-success {
+  color: #28a745;
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+.fw-bold {
+  font-weight: bold;
+}

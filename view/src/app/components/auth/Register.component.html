@@ -1,0 +1,43 @@
+<div class="register-container">
+
+  <h2 class="title text-center">Đăng ký SMEMBER</h2>
+
+  <form (ngSubmit)="register()" class="register-form">
+
+    <!-- Họ và tên -->
+    <div class="mb-3">
+      <label class="form-label">Họ và tên</label>
+      <input type="text" class="form-control input-box"
+             placeholder="Nhập họ và tên"
+             [(ngModel)]="name" name="name" required>
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control input-box"
+             placeholder="Nhập email"
+             [(ngModel)]="email" name="email" required>
+    </div>
+
+    <!-- Mật khẩu -->
+    <div class="mb-3">
+      <label class="form-label">Mật khẩu</label>
+      <input type="password" class="form-control input-box"
+             placeholder="Nhập mật khẩu"
+             [(ngModel)]="password" name="password" required>
+    </div>
+
+    <!-- Nút -->
+    <div class="d-flex justify-content-between mt-4">
+      <button class="btn btn-light back-btn" routerLink="/login">
+         Quay lại đăng nhập
+      </button>
+
+      <button class="btn btn-danger submit-btn">
+        Đăng ký
+      </button>
+    </div>
+
+  </form>
+</div>

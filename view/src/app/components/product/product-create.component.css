@@ -1,0 +1,53 @@
+/* product-create.component.css & product-edit.component.css */
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+.form-label {
+  font-weight: 600;
+  color: #333;
+}
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  height: 48px;
+}
+textarea {
+  resize: vertical;
+  height: auto;
+}
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+}
+button.btn-primary {
+  background-color: #d70018;
+  color: #fff;
+}
+button.btn-primary:hover {
+  background-color: #b60014;
+}
+button.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+  margin-right: 10px;
+}
+button.btn-secondary:hover {
+  background-color: #5a6268;
+}
+.text-danger {
+  font-size: 12px;
+  color: #d70018;
+}

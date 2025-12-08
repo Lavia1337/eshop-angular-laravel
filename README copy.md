@@ -1,4 +1,4 @@
-# eshop-angular-laravel
+# Example-CRUD-Angular-18-Laravel-11
 - The example shows how to Building an Angular CRUD App with a Laravel API and using MySQL as a database.
 - The article of this repository https://blog.stackpuz.com/building-an-angular-crud-app-with-a-laravel-api
 - To find more resources, please visit https://stackpuz.com

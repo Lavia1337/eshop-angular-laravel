@@ -1,0 +1,21 @@
+<!-- HEADER -->
+
+<h2>Thanh toán</h2>
+
+<div *ngIf="cartItems.length > 0">
+  <p>Tổng tiền: {{total | currency:'VND'}}</p>
+
+  <label>Địa chỉ giao hàng:</label>
+  <input type="text" [(ngModel)]="address" placeholder="Nhập địa chỉ"/>
+
+  <label>Phương thức thanh toán:</label>
+  <select [(ngModel)]="paymentMethod">
+    <option value="COD">COD</option>
+    <option value="VNPay">VNPay</option>
+    <option value="PayPal">PayPal</option>
+  </select>
+
+  <button (click)="checkout()">Đặt hàng</button>
+</div>
+
+<p *ngIf="cartItems.length === 0">Giỏ hàng trống</p>

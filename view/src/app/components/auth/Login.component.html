@@ -1,0 +1,70 @@
+<!-- HEADER -->
+
+
+<div class="login-container">
+
+  <h2 class="title text-center">Đăng nhập SMEMBER</h2>
+
+  <form (ngSubmit)="login()" class="login-form">
+
+    <!-- Email -->
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control input-box"
+             placeholder="Nhập email của bạn"
+             [(ngModel)]="email" name="email" required>
+    </div>
+
+    <!-- Mật khẩu -->
+    <div class="mb-3 position-relative">
+      <label class="form-label">Mật khẩu</label>
+      <input type="password" class="form-control input-box"
+             placeholder="Nhập mật khẩu của bạn"
+             [(ngModel)]="password" name="password" required>
+
+      <span class="toggle-eye">👁️</span>
+    </div>
+
+    <!-- Button Đăng nhập -->
+    <button class="btn btn-danger w-100 login-btn">Đăng nhập</button>
+
+    <!-- Quên mật khẩu -->
+    <div class="text-center mt-2">
+      <a href="#" class="forgot-link">Quên mật khẩu?</a>
+    </div>
+
+    <!-- Hoặc đăng nhập bằng -->
+    <div class="d-flex align-items-center mt-4">
+      <div class="flex-grow-1 line"></div>
+      <div class="px-2 text-muted small">Hoặc đăng nhập bằng</div>
+      <div class="flex-grow-1 line"></div>
+    </div>
+
+    <!-- Social login -->
+    <div class="d-flex justify-content-center gap-3 mt-3">
+      <button type="button" class="social-btn google">
+        <img src="assets/google-icon.png" alt="Google">
+        Google
+      </button>
+
+      <button type="button" class="social-btn zalo">
+        <img src="assets/zalo-icon.png" alt="Zalo">
+        Zalo
+      </button>
+    </div>
+
+    <!-- Đăng ký -->
+    <div class="text-center mt-4">
+      <span>Bạn chưa có tài khoản?</span>
+      <a routerLink="/register" class="register-link">Đăng ký ngay</a>
+    </div>
+
+    <p class="footer-text text-center mt-4">
+      Mua sắm, sửa chữa tại <br>
+      <a href="https://cellphones.com.vn">cellphones.com.vn</a>
+      và
+      <a href="https://dienthoaivui.com.vn">dienthoaivui.com.vn</a>
+    </p>
+
+  </form>
+</div>

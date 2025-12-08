@@ -1,0 +1,36 @@
+.register-container {
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.title {
+  font-weight: 700;
+  color: #d70018;
+  margin-bottom: 30px;
+}
+
+.input-box {
+  border-radius: 10px;
+  padding: 12px;
+  height: 48px;
+  font-size: 15px;
+}
+
+.back-btn {
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.submit-btn {
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: 600;
+  background-color: #d70018;
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #b80014;
+}

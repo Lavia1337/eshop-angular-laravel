@@ -1,0 +1,35 @@
+/* checkout.component.css */
+.container {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  height: 48px;
+}
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+}
+button.btn-primary {
+  background-color: #d70018;
+  color: #fff;
+}
+button.btn-primary:hover {
+  background-color: #b60014;
+}
+p.total {
+  font-weight: 600;
+  font-size: 16px;
+  color: #d70018;
+}

@@ -1,0 +1,77 @@
+/* Header Component Styles */
+.header {
+  background-color: #d70018;
+  padding: 0.5rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.logo img {
+  height: 35px;
+}
+
+.search input {
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.btn {
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-light {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn-light:hover {
+  background-color: #f8f9fa;
+}
+
+.btn-outline-light {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.btn-outline-light:hover {
+  background-color: #fff;
+  color: #d70018;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+.ms-3 {
+  margin-left: 1rem;
+}

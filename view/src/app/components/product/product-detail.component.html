@@ -1,0 +1,30 @@
+<!-- HEADER -->
+
+
+<div class="container mt-4" *ngIf="product">
+  <h2>{{ product.name }}</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <img [src]="product.image" alt="{{ product.name }}" class="img-fluid">
+    </div>
+    <div class="col-md-6">
+      <p><strong>Price:</strong> {{ product.price | currency:'VND' }}</p>
+      <p><strong>Description:</strong> {{ product.description }}</p>
+
+      <button class="btn btn-primary" (click)="goBack()">Back</button>
+
+      <!-- Chỉ gọi nếu product.id tồn tại -->
+      <button class="btn btn-warning" 
+              *ngIf="product.id !== undefined"
+              (click)="editProduct(product.id)">Edit</button>
+      <button class="btn btn-danger" 
+              *ngIf="product.id !== undefined"
+              (click)="deleteProduct(product.id)">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading khi product chưa được load -->
+<div *ngIf="!product" class="text-center mt-4">
+  <p>Loading product...</p>
+</div>

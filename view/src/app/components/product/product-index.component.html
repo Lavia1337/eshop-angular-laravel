@@ -1,0 +1,181 @@
+<!-- HEADER -->
+<div class="header-main py-3" style="background-color: #d70018;">
+  <div class="container d-flex justify-content-between align-items-center">
+
+    <a (click)="goHome()" class="text-white text-decoration-none fw-bold fs-4 me-4" style="cursor: pointer;">STORE</a>
+
+    <div class="flex-grow-1 mx-4">
+      <div class="input-group">
+        <input type="text" class="form-control rounded-pill" placeholder="Bạn muốn mua gì ?"
+          [(ngModel)]="searchKeyword">
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-3 text-white">
+
+      <span *ngIf="isLoggedIn && user" class="fw-bold d-none d-md-block">
+        Xin chào, {{ user.name }}
+      </span>
+
+      <ng-container *ngIf="isLoggedIn">
+
+        <button *ngIf="!isAdmin" (click)="goCart()" class="btn btn-light btn-outline-light position-relative fw-bold">
+          🛒 Giỏ hàng
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+          </span>
+        </button>
+
+        <button *ngIf="isAdmin" (click)="addProductModal()" class="btn btn-warning fw-bold text-dark">
+          ➕ Thêm sản phẩm
+        </button>
+
+      </ng-container>
+
+      <button *ngIf="!isLoggedIn" (click)="goLogin()" class="btn btn-light text-danger fw-bold">
+        Đăng nhập
+      </button>
+
+      <button *ngIf="isLoggedIn" (click)="logout()" class="btn btn-light border-light">
+        Đăng xuất
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- 🔥 TOP BANNER -->
+<div class="top-banner text-center text-white py-1" style="background: #000;">
+  <strong>🔥 Black Fire-Day 2025 sắp trở lại - Đăng ký ngay! 🔥</strong>
+</div>
+
+<!-- 🔥 NAVIGATION DƯỚI HEADER -->
+<div class="nav-categories shadow-sm py-2" style="background: #fff;">
+  <div class="container d-flex justify-content-center gap-4 fw-bold">
+    <a class="text-danger" href="#">MỪNG KHAI TRƯƠNG</a>
+    <a href="#">IPHONE 17 SERIES</a>
+    <a href="#">GALAXY S25 FE</a>
+    <a href="#">IPAD PRO</a>
+    <a href="#">AIRPODS</a>
+    <a href="#">Mua sắm online</a>
+  </div>
+</div>
+
+<!-- 🔥 MAIN LAYOUT -->
+<div class="container mt-3">
+
+  <div class="row">
+
+    <!-- 📌 SIDEBAR DANH MỤC BÊN TRÁI -->
+    <div class="col-md-3">
+      <div class="category-menu p-3 shadow-sm rounded" style="background: #fff;">
+        <ul class="list-unstyled">
+          <li class="py-2 border-bottom">📱 Điện thoại, Tablet</li>
+          <li class="py-2 border-bottom">💻 Laptop</li>
+          <li class="py-2 border-bottom">🎧 Âm thanh</li>
+          <li class="py-2 border-bottom">📸 Đồng hồ, Camera</li>
+          <li class="py-2 border-bottom">🏠 Đồ gia dụng</li>
+          <li class="py-2 border-bottom">🔌 Phụ kiện</li>
+          <li class="py-2 border-bottom">🖥 PC, Màn hình</li>
+          <li class="py-2 border-bottom">📺 Tivi</li>
+          <li class="py-2 border-bottom">🔁 Thu cũ đổi mới</li>
+          <li class="py-2 border-bottom">🔥 Khuyến mãi</li>
+          <li class="py-2">📰 Tin công nghệ</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 📌 SLIDER CHÍNH -->
+    <div class="col-md-6">
+      <div class="main-banner mb-3">
+        <img src="https://cdn2.cellphones.com.vn/433x/media/catalog/product/i/p/iphone-17-pro-mau-moi-1.png"
+          class="img-fluid rounded shadow-sm" alt="slider">
+      </div>
+
+      <div class="row g-2">
+        <div class="col-6">
+          <img src="https://cdn2.cellphones.com.vn/433x/media/catalog/product/s/a/samsung-s25-fe.png"
+            class="img-fluid rounded shadow-sm">
+        </div>
+        <div class="col-6">
+          <img src="https://cdn2.cellphones.com.vn/433x/media/catalog/product/i/p/ipad-pro.png"
+            class="img-fluid rounded shadow-sm">
+        </div>
+      </div>
+    </div>
+
+    <!-- 📌 ƯU ĐÃI BÊN PHẢI -->
+    <div class="col-md-3">
+      <div class="side-banner p-3 rounded shadow-sm" style="background: #fff;">
+        <ul class="list-unstyled">
+          <li class="py-2 border-bottom">🎓 Ưu đãi giáo dục</li>
+          <li class="py-2 border-bottom">🎁 Đăng ký nhận ưu đãi</li>
+          <li class="py-2 border-bottom">🔁 Thu cũ lên đời</li>
+          <li class="py-2 border-bottom">💻 Laptop giảm đến 500K</li>
+          <li class="py-2">📱 iPhone trợ giá 5 triệu</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 🔥 DANH SÁCH SẢN PHẨM -->
+<div *ngIf="products.length > 0; else loading" class="container mt-4">
+
+  <h3 class="fw-bold mb-3">🔥 Sản phẩm nổi bật</h3>
+
+  <div class="row g-3">
+
+    <div *ngFor="let product of products" class="col-md-4 col-sm-6">
+      <div class="card h-100 shadow-sm">
+
+        <img *ngIf="product.image" class="card-img-top" [src]="'http://localhost:8000/storage/' + product.image"
+          alt="{{ product.name }}" style="height: 200px; object-fit: cover;" />
+
+        <div class="card-body d-flex flex-column">
+
+          <h5 class="card-title">{{ product.name }}</h5>
+
+          <p class="card-text text-danger fw-bold">
+            Giá: {{ product.price | currency:'VND' }}
+          </p>
+
+          <p class="text-muted" *ngIf="product.description">
+            {{ product.description }}
+          </p>
+
+          <p><strong>Danh mục:</strong> {{ product.category?.name || 'Không có' }}</p>
+
+          <p>
+            <strong>Trạng thái:</strong>
+            <span [class.text-success]="product.status" [class.text-danger]="!product.status">
+              {{ product.status ? 'Còn hàng' : 'Hết hàng' }}
+            </span>
+          </p>
+
+          <div *ngIf="product.id !== undefined" class="mb-2">
+            <label class="form-label">Số lượng</label>
+            <input type="number" min="1" class="form-control w-50" [(ngModel)]="quantities[product.id]" />
+          </div>
+
+          <div class="mt-auto">
+            <button class="btn btn-primary w-100 mb-2" (click)="addToCart(product.id)">
+              🛒 Thêm vào giỏ hàng
+            </button>
+
+            <button class="btn btn-outline-secondary w-100" (click)="viewProduct(product.id)">
+              👁 Xem chi tiết
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #loading>
+  <p class="text-center mt-3">Đang tải sản phẩm...</p>
+</ng-template>
