@@ -2,15 +2,33 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+// ====== Interface cho hình ảnh ======
+export interface ProductImage {
+  id: number;
+  product_id: number;
+  image_path: string;
+}
+
+// ====== Interface Product đầy đủ ======
 export interface Product {
   id?: number;
   name: string;
   price: number;
   description?: string;
+
+  // Hình ảnh chính (nếu có)
   image?: string;
 
-  // Thuộc tính thêm
-  category?: { id: number; name: string };
+  // Danh sách nhiều hình ảnh
+  images?: ProductImage[];
+
+  quantity?: number;
+
+  category?: {
+    id: number;
+    name: string;
+  };
+
   status?: boolean;
 }
 
@@ -19,32 +37,26 @@ export interface Product {
 })
 export class ProductService {
 
-  // ✔️ Sửa lại URL đúng với Laravel API
   private apiUrl = 'http://localhost:8000/api/products';
 
   constructor(private http: HttpClient) {}
 
-  // Lấy danh sách sản phẩm
   getAll(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
-  // Lấy 1 sản phẩm theo id
   getById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
-  // Thêm sản phẩm
   create(data: Product): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, data);
   }
 
-  // Cập nhật sản phẩm
   edit(id: number, data: Product): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, data);
   }
 
-  // Xóa sản phẩm
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

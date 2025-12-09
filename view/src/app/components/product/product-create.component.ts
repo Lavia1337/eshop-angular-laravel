@@ -10,7 +10,7 @@ import { ProductService, Product } from '../../services/product.service';
 export class ProductCreateComponent {
 
   // ✅ Không cần id vì interface đã cho phép optional
-  product: Product = { name: '', price: 0, description: '', image: '' };
+  product: Product = { name: '', price: 0, description: '', image: '' , quantity: 0};
   errors: any = {};
 
   constructor(private productService: ProductService, private router: Router) {}

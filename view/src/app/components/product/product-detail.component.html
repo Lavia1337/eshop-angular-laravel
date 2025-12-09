@@ -1,30 +1,72 @@
-<!-- HEADER -->
+<div class="container mt-4" *ngIf="!loading; else loadingTpl">
 
-
-<div class="container mt-4" *ngIf="product">
-  <h2>{{ product.name }}</h2>
   <div class="row">
+    <!-- ẢNH SẢN PHẨM -->
     <div class="col-md-6">
-      <img [src]="product.image" alt="{{ product.name }}" class="img-fluid">
+      <div class="main-image mb-3">
+        <img [src]="'http://localhost:8000/storage/' + product?.image" 
+             class="img-fluid rounded shadow-sm" 
+             alt="{{ product?.name }}">
+      </div>
+
+      <div class="row g-2">
+        <div class="col-3" *ngFor="let img of product?.images">
+          <img [src]="'http://localhost:8000/storage/' + img" 
+               class="img-fluid rounded shadow-sm" 
+               alt="{{ product?.name }}">
+        </div>
+      </div>
     </div>
+
+    <!-- THÔNG TIN SẢN PHẨM -->
     <div class="col-md-6">
-      <p><strong>Price:</strong> {{ product.price | currency:'VND' }}</p>
-      <p><strong>Description:</strong> {{ product.description }}</p>
+      <h2 class="fw-bold">{{ product?.name }}</h2>
 
-      <button class="btn btn-primary" (click)="goBack()">Back</button>
+      <div class="mb-2">
+        <span class="fw-bold">Giá:</span>
+        <span class="text-danger fw-bold">{{ product?.price | currency:'VND' }}</span>
+      </div>
 
-      <!-- Chỉ gọi nếu product.id tồn tại -->
-      <button class="btn btn-warning" 
-              *ngIf="product.id !== undefined"
-              (click)="editProduct(product.id)">Edit</button>
-      <button class="btn btn-danger" 
-              *ngIf="product.id !== undefined"
-              (click)="deleteProduct(product.id)">Delete</button>
+      <div class="mb-2" *ngIf="product?.description">
+        <span class="fw-bold">Mô tả:</span>
+        <p>{{ product?.description }}</p>
+      </div>
+
+      <div class="mb-2">
+        <span class="fw-bold">Danh mục:</span>
+        {{ product?.category?.name || 'Không có' }}
+      </div>
+
+      <div class="mb-3">
+        <span class="fw-bold">Trạng thái:</span>
+        <span [class.text-success]="(product?.quantity ?? 0) > 0"
+              [class.text-danger]="(product?.quantity ?? 0) <= 0">
+          {{ (product?.quantity ?? 0) > 0 ? 'Còn hàng' : 'Hết hàng' }}
+        </span>
+      </div>
+
+      <!-- Nút thêm giỏ hàng -->
+      <div class="d-flex gap-2 mb-3">
+        <button class="btn btn-danger flex-grow-1" (click)="addToCart(product?.id)">
+          🛒 Thêm vào giỏ
+        </button>
+      </div>
+
+      <!-- Nút admin: Sửa/Xóa -->
+      <div class="d-flex gap-2 mb-3" *ngIf="isAdmin">
+        <button class="btn btn-warning flex-grow-1" (click)="edit()">✏️ Sửa</button>
+        <button class="btn btn-danger flex-grow-1" (click)="delete()">🗑️ Xóa</button>
+      </div>
+
+      <div class="mb-2">
+        <button class="btn btn-secondary w-100" (click)="goBack()">Quay lại</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Loading khi product chưa được load -->
-<div *ngIf="!product" class="text-center mt-4">
-  <p>Loading product...</p>
-</div>
+<ng-template #loadingTpl>
+  <div class="text-center mt-4">
+    <p>Đang tải sản phẩm...</p>
+  </div>
+</ng-template>

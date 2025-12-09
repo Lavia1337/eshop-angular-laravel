@@ -19,6 +19,11 @@
       <label class="form-label">Image URL</label>
       <input type="text" class="form-control" [(ngModel)]="product.image" name="image">
     </div>
+    <div *ngIf="isAdmin">
+  <button (click)="edit()" class="btn btn-primary">Sửa</button>
+  <button (click)="delete()" class="btn btn-danger">Xóa</button>
+</div>
+
     <button class="btn btn-primary">Save</button>
     <a class="btn btn-secondary" routerLink="/products">Cancel</a>
   </form>

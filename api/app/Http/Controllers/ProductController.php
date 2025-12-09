@@ -3,37 +3,71 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductImage;
+use Illuminate\Http\Request;
 
 class ProductController {
 
     public function index()
     {
-        return Product::get();
+        return Product::with('images')->get();
     }
 
     public function show($id)
     {
-        return Product::find($id);
+        return Product::with('images')->findOrFail($id);
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        return Product::create([
-            'name' => request()->input('name'),
-            'price' => request()->input('price')
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer|min:0',
+            'description' => 'nullable|string'
         ]);
+
+        // Tạo sản phẩm
+        $product = Product::create($validated);
+
+        // Nếu có ảnh gửi lên
+        if ($request->has('image')) {
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => $request->image
+            ]);
+        }
+
+        return $product->load('images');
     }
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        return tap(Product::find($id))->update([
-            'name' => request()->input('name'),
-            'price' => request()->input('price')
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer|min:0',
+            'description' => 'nullable|string'
         ]);
+
+        $product = Product::findOrFail($id);
+        $product->update($validated);
+
+        // Nếu có ảnh mới upload thì thêm vào bảng product_images
+        if ($request->has('image')) {
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => $request->image
+            ]);
+        }
+
+        return $product->load('images');
     }
 
     public function destroy($id)
     {
-        Product::find($id)->delete();
+        Product::findOrFail($id)->delete();
+
+        return response()->json(['message' => 'Deleted']);
     }
 }

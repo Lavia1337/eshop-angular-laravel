@@ -1,26 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  private api = `${environment.apiUrl}`;
 
-  constructor(private http: HttpClient) {}
+  constructor() { }
 
-  login(data: any) {
-    return this.http.post(`${this.api}/login`, data);
+  // Giả sử thông tin user được lưu trong localStorage
+  getCurrentUser(): { role: string, username: string } | null {
+    const userJson = localStorage.getItem('currentUser');
+    if (userJson) {
+      return JSON.parse(userJson);
+    }
+    return null;
   }
 
-  register(data: any) {
-    return this.http.post(`${this.api}/register`, data);
+  // Ví dụ login lưu thông tin user
+  login(user: { username: string, role: string }) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
   logout() {
-    localStorage.removeItem('token');
-  }
-
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    localStorage.removeItem('currentUser');
   }
 }
