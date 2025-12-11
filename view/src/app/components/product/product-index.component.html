@@ -11,20 +11,17 @@
       </span>
 
       <ng-container *ngIf="isLoggedIn">
-
         <button *ngIf="!isAdmin" (click)="goCart()" class="btn btn-cart-custom position-relative fw-bold">
           🛒 Giỏ hàng
           <span *ngIf="cartItemCount > 0"
             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark border border-light">
             {{ cartItemCount }}
-            <span class="visually-hidden">sản phẩm trong giỏ</span>
           </span>
         </button>
 
         <button *ngIf="isAdmin" (click)="addProductModal()" class="btn btn-warning fw-bold text-dark">
           ➕ Thêm sản phẩm
         </button>
-
       </ng-container>
 
       <button *ngIf="!isLoggedIn" (click)="goLogin()" class="btn btn-light text-danger fw-bold">
@@ -34,19 +31,16 @@
       <button *ngIf="isLoggedIn" (click)="logout()" class="btn btn-light border-light">
         Đăng xuất
       </button>
-
     </div>
-
-
   </div>
 </div>
 
-<!-- 🔥 TOP BANNER -->
+<!-- TOP BANNER -->
 <div class="top-banner text-center text-white py-1" style="background: #000;">
   <strong>🔥 Black Fire-Day 2025 sắp trở lại - Đăng ký ngay! 🔥</strong>
 </div>
 
-<!-- 🔥 NAVIGATION DƯỚI HEADER -->
+<!-- NAVIGATION DƯỚI HEADER -->
 <div class="nav-categories shadow-sm py-2" style="background: #fff;">
   <div class="container d-flex justify-content-center gap-4 fw-bold">
     <a class="text-danger" href="#">MỪNG KHAI TRƯƠNG</a>
@@ -58,30 +52,31 @@
   </div>
 </div>
 
-<!-- 🔥 MAIN LAYOUT -->
+<!-- MAIN LAYOUT -->
 <div class="container mt-3">
   <div class="row">
 
-    <!-- 📌 SIDEBAR DANH MỤC BÊN TRÁI -->
+    <!-- SIDEBAR DANH MỤC -->
     <div class="col-md-3">
       <div class="category-menu p-3 shadow-sm rounded" style="background: #fff;">
+        <h5 class="fw-bold mb-3">Danh mục</h5>
+
         <ul class="list-unstyled">
-          <li class="py-2 border-bottom">📱 Điện thoại, Tablet</li>
-          <li class="py-2 border-bottom">💻 Laptop</li>
-          <li class="py-2 border-bottom">🎧 Âm thanh</li>
-          <li class="py-2 border-bottom">📸 Đồng hồ, Camera</li>
-          <li class="py-2 border-bottom">🏠 Đồ gia dụng</li>
-          <li class="py-2 border-bottom">🔌 Phụ kiện</li>
-          <li class="py-2 border-bottom">🖥 PC, Màn hình</li>
-          <li class="py-2 border-bottom">📺 Tivi</li>
-          <li class="py-2 border-bottom">🔁 Thu cũ đổi mới</li>
-          <li class="py-2 border-bottom">🔥 Khuyến mãi</li>
-          <li class="py-2">📰 Tin công nghệ</li>
+          <li class="py-2 border-bottom" style="cursor: pointer;" (click)="filterByCategory(null)">
+              Tất cả sản phẩm
+          </li>
+
+          <li *ngFor="let c of categories"
+              class="py-2 border-bottom"
+              style="cursor: pointer;"
+              (click)="filterByCategory(c.id ?? 0)">
+              {{ c.name }}
+          </li>
         </ul>
       </div>
     </div>
 
-    <!-- 📌 SLIDER CHÍNH -->
+    <!-- SLIDER CHÍNH -->
     <div class="col-md-6">
       <div class="main-banner mb-3">
         <img
@@ -103,7 +98,7 @@
       </div>
     </div>
 
-    <!-- 📌 ƯU ĐÃI BÊN PHẢI -->
+    <!-- ƯU ĐÃI BÊN PHẢI -->
     <div class="col-md-3">
       <div class="side-banner p-3 rounded shadow-sm" style="background: #fff;">
         <ul class="list-unstyled">
@@ -119,62 +114,43 @@
   </div>
 </div>
 
-<!-- 🔥 DANH SÁCH SẢN PHẨM -->
+<!-- DANH SÁCH SẢN PHẨM -->
 <div *ngIf="products.length > 0; else loading" class="container mt-4">
-
   <h3 class="fw-bold mb-3">🔥 Sản phẩm nổi bật</h3>
 
   <div class="row g-3">
-
     <div *ngFor="let product of products" class="col-md-4 col-sm-6">
       <div class="card h-100 shadow-sm">
 
-        <!-- 🔥 ẢNH -->
-        <img
-          *ngIf="product.image"
+        <img *ngIf="product.image"
           [src]="'http://localhost:8000/storage/' + product.image"
           class="img-fluid rounded shadow-sm"
-          alt="{{ product.name }}"
-          style="height: 200px; object-fit: cover;"
-        >
+          style="height: 200px; object-fit: cover;">
 
         <div class="card-body d-flex flex-column">
-
           <h5 class="card-title">{{ product.name }}</h5>
-
-          <p class="card-text text-danger fw-bold">
-            Giá: {{ product.price | currency:'VND' }}
-          </p>
-
-          <p class="text-muted" *ngIf="product.description">
-            {{ product.description }}
-          </p>
-
+          <p class="card-text text-danger fw-bold">Giá: {{ product.price | currency:'VND' }}</p>
           <p><strong>Danh mục:</strong> {{ product.category?.name || 'Không có' }}</p>
 
-          <!-- 🔥 TRẠNG THÁI -->
           <p>
             <strong>Trạng thái:</strong>
-            <span
-              [class.text-success]="(product.quantity ?? 0) > 0"
-              [class.text-danger]="(product.quantity ?? 0) <= 0">
+            <span [class.text-success]="(product.quantity ?? 0) > 0"
+                  [class.text-danger]="(product.quantity ?? 0) <= 0">
               {{ (product.quantity ?? 0) > 0 ? 'Còn hàng' : 'Hết hàng' }}
             </span>
           </p>
 
-          <!-- 🔥 INPUT SỐ LƯỢNG -->
+          <!-- INPUT SỐ LƯỢNG -->
           <div *ngIf="product.id !== undefined" class="mb-2">
             <label class="form-label">Số lượng</label>
-            <input type="number" min="1" class="form-control w-50"
-              [(ngModel)]="quantities[product.id]" />
+            <input type="number" min="1" class="form-control w-50" [(ngModel)]="quantities[product.id]" />
           </div>
 
-          <!-- 🔥 NÚT -->
+          <!-- BUTTONS -->
           <div class="mt-auto">
             <button class="btn btn-primary w-100 mb-2" (click)="addToCart(product.id)">
               🛒 Thêm vào giỏ hàng
             </button>
-
             <button class="btn btn-outline-secondary w-100" (click)="viewProduct(product.id)">
               👁 Xem chi tiết
             </button>
@@ -183,7 +159,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 

@@ -6,67 +6,96 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 
-class ProductController {
-
+class ProductController extends Controller
+{
+    /**
+     * Lấy danh sách sản phẩm cùng images và category
+     */
     public function index()
     {
-        return Product::with('images')->get();
+        return Product::with(['images', 'category'])->get();
     }
 
+    /**
+     * Lấy chi tiết sản phẩm theo ID
+     */
     public function show($id)
     {
-        return Product::with('images')->findOrFail($id);
+        return Product::with(['images', 'category'])->findOrFail($id);
     }
 
+    /**
+     * Thêm sản phẩm mới
+     */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer|min:0',
-            'description' => 'nullable|string'
+{
+    $validated = $request->validate([
+        'name'        => 'required|string',
+        'price'       => 'required|numeric',
+        'quantity'    => 'required|integer|min:0',
+        'description' => 'nullable|string',
+        'category_id' => 'required|exists:categories,id', // bắt buộc
+        'image'       => 'nullable|string'
+    ]);
+
+    $product = Product::create([
+        'name'        => $validated['name'],
+        'price'       => $validated['price'],
+        'quantity'    => $validated['quantity'],
+        'description' => $validated['description'] ?? null,
+        'category_id' => $validated['category_id'] // ✅ đảm bảo category_id lưu
+    ]);
+
+    if (!empty($validated['image'])) {
+        ProductImage::create([
+            'product_id' => $product->id,
+            'image_path' => $validated['image']
         ]);
-
-        // Tạo sản phẩm
-        $product = Product::create($validated);
-
-        // Nếu có ảnh gửi lên
-        if ($request->has('image')) {
-            ProductImage::create([
-                'product_id' => $product->id,
-                'image_path' => $request->image
-            ]);
-        }
-
-        return $product->load('images');
     }
 
+    return $product->load(['images', 'category']);
+}
+
+    /**
+     * Cập nhật sản phẩm
+     */
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer|min:0',
-            'description' => 'nullable|string'
+            'name'        => 'required|string',
+            'price'       => 'required|numeric',
+            'quantity'    => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'image'       => 'nullable|string'
         ]);
 
         $product = Product::findOrFail($id);
+
         $product->update($validated);
 
-        // Nếu có ảnh mới upload thì thêm vào bảng product_images
-        if ($request->has('image')) {
+        // Nếu có ảnh mới, thêm vào bảng ProductImage
+        if (!empty($validated['image'])) {
             ProductImage::create([
                 'product_id' => $product->id,
-                'image_path' => $request->image
+                'image_path' => $validated['image']
             ]);
         }
 
-        return $product->load('images');
+        return $product->load(['images', 'category']);
     }
 
+    /**
+     * Xóa sản phẩm
+     */
     public function destroy($id)
     {
-        Product::findOrFail($id)->delete();
+        $product = Product::findOrFail($id);
+
+        // Xóa luôn ảnh liên quan nếu muốn
+        $product->images()->delete();
+
+        $product->delete();
 
         return response()->json(['message' => 'Deleted']);
     }

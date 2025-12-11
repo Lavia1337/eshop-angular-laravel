@@ -1,30 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService, Product } from '../../services/product.service';
+import { CategoryService, Category } from '../../services/category.service';
 
 @Component({
   selector: 'app-product-create',
   templateUrl: './product-create.component.html',
   styleUrls: ['./product-create.component.css']
 })
-export class ProductCreateComponent {
+export class ProductCreateComponent implements OnInit {
 
-  // ✅ Không cần id vì interface đã cho phép optional
-  product: Product = { name: '', price: 0, description: '', image: '' , quantity: 0};
-  errors: any = {};
+  product: Product = {
+    name: '',
+    price: 0,
+    description: '',
+    quantity: 0,
+    category_id: 0
+  };
 
-  constructor(private productService: ProductService, private router: Router) {}
+  categories: Category[] = [];
+
+  constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.categoryService.getAll().subscribe({
+      next: data => this.categories = data,
+      error: err => console.error(err)
+    });
+  }
 
   create(): void {
+    if (!this.product.category_id || this.product.category_id === 0) {
+      alert('Vui lòng chọn danh mục');
+      return;
+    }
+
     this.productService.create(this.product).subscribe({
       next: () => {
         alert('Thêm sản phẩm thành công!');
-        this.router.navigateByUrl('/products');
+        this.router.navigate(['/products']);
       },
-      error: err => {
-        console.error(err);
-        alert(err.error?.message || 'Lỗi khi tạo sản phẩm');
-      }
+      error: err => alert(err.error?.message || 'Lỗi khi tạo sản phẩm')
     });
   }
 }

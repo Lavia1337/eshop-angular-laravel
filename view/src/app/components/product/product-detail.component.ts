@@ -14,24 +14,26 @@ export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
   loading: boolean = true;
   isAdmin: boolean = false;
-  isLoggedIn: boolean = false;
   quantities: { [key: number]: number } = {};
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
     const id = +this.route.snapshot.params['id'];
 
+    // Lấy thông tin product
     this.productService.getById(id).subscribe({
       next: (data: Product) => {
         this.product = data;
         this.loading = false;
+        // Gán số lượng mặc định
+        if (data.id) this.quantities[data.id] = 1;
       },
       error: (err) => {
         alert(err.error || 'Error loading product');
@@ -39,23 +41,29 @@ export class ProductDetailComponent implements OnInit {
       }
     });
 
-    const user = this.authService.getCurrentUser();
-    this.isLoggedIn = !!user;
-    this.isAdmin = user?.role === 'admin';
+    // Load user từ AuthService / localStorage
+    const user = this.authService.getCurrentUser() || this.getUserFromLocal();
+    this.isAdmin = user?.role?.toLowerCase() === 'admin';
   }
 
-  // Admin: Sửa sản phẩm
+  // Nếu AuthService không trả về, fallback từ localStorage
+  getUserFromLocal() {
+    const userData = localStorage.getItem('user');
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  // Admin: sửa sản phẩm
   edit(): void {
     if (!this.isAdmin) return alert('Bạn không có quyền sửa');
-    if (!this.product || this.product.id === undefined) return;
+    if (!this.product?.id) return;
 
-    this.router.navigate(['/products/edit', this.product.id]);
+    this.router.navigate(['/admin/products/edit', this.product.id]);
   }
 
-  // Admin: Xóa sản phẩm
+  // Admin: xóa sản phẩm
   delete(): void {
     if (!this.isAdmin) return alert('Bạn không có quyền xóa');
-    if (!this.product || this.product.id === undefined) return;
+    if (!this.product?.id) return;
 
     this.productService.delete(this.product.id).subscribe({
       next: () => this.router.navigate(['/products']),
@@ -63,7 +71,7 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  // Thêm sản phẩm vào giỏ
+  // Thêm vào giỏ hàng
   addToCart(productId?: number): void {
     if (!productId) return;
 
@@ -72,13 +80,13 @@ export class ProductDetailComponent implements OnInit {
     this.cartService.addToCart(productId, quantity).subscribe({
       next: () => alert('Đã thêm vào giỏ hàng!'),
       error: (err) => {
-        console.error('Lỗi thêm vào giỏ hàng:', err);
+        console.error(err);
         alert('Không thể thêm vào giỏ hàng!');
       }
     });
   }
 
-  // Quay lại danh sách sản phẩm
+  // Quay lại danh sách
   goBack(): void {
     this.router.navigate(['/products']);
   }
