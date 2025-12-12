@@ -2,6 +2,7 @@ api/.vscode
 api/public/storage
 api/vendor
 api/composer.lock
+api/.env
 view/.vscode
 view/.angular
 view/node_modules
