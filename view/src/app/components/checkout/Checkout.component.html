@@ -1,21 +1,30 @@
 <!-- HEADER -->
+<app-header></app-header>
 
-<h2>Thanh toán</h2>
+<div class="checkout-container">
 
-<div *ngIf="cartItems.length > 0">
-  <p>Tổng tiền: {{total | currency:'VND'}}</p>
+  <h2>Thanh toán</h2>
 
-  <label>Địa chỉ giao hàng:</label>
-  <input type="text" [(ngModel)]="address" placeholder="Nhập địa chỉ"/>
+  <div *ngIf="cartItems.length > 0">
+    <p>
+      Tổng tiền:
+      <span style="color: #d70018; font-size: 20px; font-weight: bold;">
+        {{total | currency:'VND'}}
+      </span>
+    </p>
 
-  <label>Phương thức thanh toán:</label>
-  <select [(ngModel)]="paymentMethod">
-    <option value="COD">COD</option>
-    <option value="VNPay">VNPay</option>
-    <option value="PayPal">PayPal</option>
-  </select>
+    <label>Địa chỉ giao hàng:</label>
+    <input type="text" [(ngModel)]="address" placeholder="Nhập số nhà, tên đường, phường/xã..." />
 
-  <button (click)="checkout()">Đặt hàng</button>
+    <label>Phương thức thanh toán:</label>
+    <select [(ngModel)]="paymentMethod">
+      <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+      <option value="VNPay">Ví điện tử MOMO</option>
+      <option value="PayPal">Cổng thanh toán PayPal</option>
+    </select>
+
+    <button class="payment-btn" (click)="checkout()">Đặt hàng</button>
+  </div>
+
+  <p *ngIf="cartItems.length === 0" class="empty-cart">Giỏ hàng của bạn đang trống</p>
 </div>
-
-<p *ngIf="cartItems.length === 0">Giỏ hàng trống</p>

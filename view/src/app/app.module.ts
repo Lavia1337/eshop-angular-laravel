@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 // Product Components
+import { HeaderComponent } from './components/product/header.component';
 import { ProductIndexComponent } from './components/product/product-index.component';
 import { ProductDetailComponent } from './components/product/product-detail.component';
 import { ProductCreateComponent } from './components/product/product-create.component';
@@ -29,6 +30,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
     ProductIndexComponent,
     ProductDetailComponent,
     ProductCreateComponent,

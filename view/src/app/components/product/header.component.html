@@ -5,7 +5,7 @@
 
     <!-- Logo -->
     <div class="logo d-flex align-items-center" style="cursor: pointer;" (click)="goHome()">
-      <img src="assets/logo-cellphones.png" height="35" />
+      <img src="../../../assets/favicon_io/favicon-16x16.png" height="35" />
     </div>
 
     <!-- Search -->
@@ -21,7 +21,14 @@
 
     <!-- KHI ĐÃ ĐĂNG NHẬP -->
     <ng-container *ngIf="isLoggedIn">
-      <button class="btn btn-light me-2" (click)="goCart()">🛒 Giỏ hàng</button>
+      <button class="btn btn-light me-2 position-relative" (click)="goCart()">
+        🛒 Giỏ hàng
+
+        <span *ngIf="cartItemCount > 0"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark border border-light">
+          {{ cartItemCount }}
+        </span>
+      </button>
 
       <div class="text-white fw-bold">
         Xin chào, {{ user?.name }}

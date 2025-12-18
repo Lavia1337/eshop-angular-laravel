@@ -15,8 +15,8 @@ import { ProductEditComponent } from './components/product/product-edit.componen
 import { ProductDeleteComponent } from './components/product/product-delete.component';
 
 const routes: Routes = [
-  // Khi chạy ứng dụng, tự động chuyển đến trang đăng nhập
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // Khi chạy ứng dụng, tự động chuyển đến trang sản phẩm
+  { path: '', redirectTo: 'products', pathMatch: 'full' },
 
   // User routes
   { path: 'products', component: ProductIndexComponent },

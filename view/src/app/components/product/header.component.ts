@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CartService } from '../../services/cart.service'; // Import service
 
 @Component({
   selector: 'app-header',
@@ -12,10 +13,26 @@ export class HeaderComponent implements OnInit {
   user: any = null;
   isAdmin = false;
 
-  constructor(private router: Router) {}
+  cartItemCount: number = 0; // Biến hiển thị trên HTML
+
+  constructor(
+    private router: Router,
+    private cartService: CartService // Inject Service
+  ) { }
 
   ngOnInit(): void {
     this.loadUser();
+
+    // 1. Đăng ký lắng nghe sự thay đổi của giỏ hàng
+    // Bất cứ khi nào cartCountSubject bên Service thay đổi, dòng này sẽ chạy
+    this.cartService.cartCount$.subscribe(count => {
+      this.cartItemCount = count;
+    });
+
+    // 2. Gọi API lần đầu để lấy số lượng khi vừa vào trang (nếu đã login)
+    if (this.isLoggedIn) {
+      this.cartService.getCart().subscribe();
+    }
   }
 
   // ✔ Load thông tin user từ localStorage

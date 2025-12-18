@@ -1,56 +1,108 @@
 <!-- HEADER -->
+<app-header></app-header>
 
-<div class="cart-container">
+<div class="cart-wrapper py-4" style="background-color: #f4f6f8; min-height: 100vh;">
+  <div class="container">
 
-  <h2 class="cart-title">🛒 Giỏ hàng của bạn</h2>
+    <div class="d-flex align-items-center mb-3">
+      <h4 class="fw-bold m-0">Giỏ hàng của bạn</h4>
+      <span class="ms-2 badge bg-secondary rounded-pill">{{ cartItems.length }} sản phẩm</span>
+    </div>
 
-  <!-- Nếu giỏ hàng trống -->
-  <div *ngIf="cartItems.length === 0" class="empty-cart">
-    Giỏ hàng trống.
-  </div>
+    <div class="row" *ngIf="cartItems.length > 0">
 
-  <!-- Nếu có sản phẩm -->
-  <table *ngIf="cartItems.length > 0" class="cart-table">
-    <thead>
-      <tr>
-        <th>Sản phẩm</th>
-        <th>Giá</th>
-        <th>Số lượng</th>
-        <th>Thành tiền</th>
-        <th></th>
-      </tr>
-    </thead>
+      <div class="col-lg-8">
+        <div class="cart-list bg-white rounded shadow-sm p-3">
 
-    <tbody>
-      <tr *ngFor="let item of cartItems">
-        
-        <!-- Tên sản phẩm -->
-        <td>{{ item.product.name }}</td>
+          <div class="d-none d-md-flex row fw-bold text-muted border-bottom pb-2 mb-3">
+            <div class="col-md-5">Sản phẩm</div>
+            <div class="col-md-2 text-center">Đơn giá</div>
+            <div class="col-md-2 text-center">Số lượng</div>
+            <div class="col-md-2 text-center">Thành tiền</div>
+            <div class="col-md-1 text-center"><i class="fas fa-trash"></i></div>
+          </div>
 
-        <!-- Giá -->
-        <td>{{ item.product.price | currency:'VND' }}</td>
+          <div *ngFor="let item of cartItems" class="row align-items-center border-bottom py-3 cart-item">
 
-        <!-- Số lượng -->
-        <td>{{ item.quantity }}</td>
+            <div class="col-md-5 d-flex align-items-center gap-3">
+              <div class="img-box">
+                <img [src]="'http://localhost:8000/storage/' + item.product.image" alt="{{ item.product.name }}"
+                  class="img-fluid rounded">
+              </div>
+              <div class="product-info">
+                <h6 class="mb-1 text-dark fw-bold product-name">{{ item.product.name }}</h6>
+                <small class="text-muted">Mã: #{{ item.product.id }}</small>
+              </div>
+            </div>
 
-        <!-- Thành tiền -->
-        <td>{{ item.product.price * item.quantity | currency:'VND' }}</td>
+            <div class="col-md-2 text-center text-muted fw-bold d-none d-md-block">
+              {{ item.product.price | currency:'VND' }}
+            </div>
 
-        <!-- Xoá -->
-        <td>
-          <button class="delete-btn" (click)="removeItem(item.product.id)">
-            Xóa
+            <div class="col-md-2 text-center">
+              <div class="qty-control d-flex align-items-center justify-content-center">
+                <input type="number" class="form-control text-center qty-input" [(ngModel)]="item.quantity" min="1"
+                  readonly>
+              </div>
+            </div>
+
+            <div class="col-md-2 text-center text-danger fw-bold">
+              {{ (item.product.price * item.quantity) | currency:'VND' }}
+            </div>
+
+            <div class="col-md-1 text-center">
+              <button class="btn btn-link text-danger delete-btn p-0" (click)="removeItem(item.product.id)">
+                <span class="fs-5">🗑️</span> </button>
+            </div>
+
+          </div>
+        </div>
+
+        <a routerLink="/products" class="text-decoration-none d-inline-block mt-3 text-danger fw-bold">
+          ⬅ Tiếp tục mua sắm
+        </a>
+      </div>
+
+      <div class="col-lg-4 mt-3 mt-lg-0">
+        <div class="cart-summary bg-white rounded shadow-sm p-4">
+          <h5 class="fw-bold mb-3 border-bottom pb-2">Cộng giỏ hàng</h5>
+
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Tạm tính:</span>
+            <span class="fw-bold">{{ total | currency:'VND' }}</span>
+          </div>
+
+          <div class="d-flex justify-content-between mb-4">
+            <span class="text-muted">Giảm giá:</span>
+            <span class="text-success">0đ</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center border-top pt-3 mb-4">
+            <span class="fw-bold fs-5">Tổng cộng:</span>
+            <span class="text-danger fw-bold fs-4">{{ total | currency:'VND' }}</span>
+          </div>
+
+          <button class="btn-checkout w-100" routerLink="/checkout">
+            TIẾN HÀNH THANH TOÁN
           </button>
-        </td>
 
-      </tr>
-    </tbody>
-  </table>
+          <div class="text-center mt-3">
+            <small class="text-muted">🔒 Bảo mật thanh toán 100%</small>
+          </div>
+        </div>
+      </div>
 
-  <!-- Tổng tiền -->
-  <div *ngIf="cartItems.length > 0" class="total-box">
-    <h3>Tổng: {{ total | currency:'VND' }}</h3>
-    <button routerLink="/checkout" class="checkout-btn">Tiến hành thanh toán</button>
+    </div>
+
+    <div *ngIf="cartItems.length === 0" class="empty-cart-container bg-white rounded shadow-sm text-center py-5">
+      <img src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png" width="150" alt="Empty Cart"
+        class="mb-3 opacity-50">
+      <h5 class="text-muted">Giỏ hàng của bạn đang trống</h5>
+      <p class="text-muted mb-4">Hãy chọn thêm sản phẩm để mua sắm nhé</p>
+      <a routerLink="/products" class="btn btn-danger rounded-pill px-4 py-2 fw-bold">
+        QUAY LẠI MUA HÀNG
+      </a>
+    </div>
+
   </div>
-
 </div>

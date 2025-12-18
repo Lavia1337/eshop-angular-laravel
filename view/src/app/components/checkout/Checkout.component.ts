@@ -18,7 +18,7 @@ export class CheckoutComponent implements OnInit {
     private orderService: OrderService,
     private cartService: CartService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.cartService.getCart().subscribe((data: any) => {
@@ -35,7 +35,7 @@ export class CheckoutComponent implements OnInit {
 
     this.orderService.checkout(data).subscribe(() => {
       alert('Đặt hàng thành công!');
-      this.router.navigate(['/product']);
+      this.router.navigate(['/products']);
     });
   }
 }

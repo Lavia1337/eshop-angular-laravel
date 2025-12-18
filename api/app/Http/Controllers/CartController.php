@@ -52,12 +52,19 @@ public function add(Request $request)
 
 
     // REMOVE FROM CART
-    public function remove(Request $request)
+   public function remove($productId, Request $request)
     {
-        CartItem::where('user_id', auth()->id())
-                ->where('product_id', $request->product_id)
-                ->delete();
+        $user = $request->user();
+        
+        // Tìm và xóa
+        $deleted = CartItem::where('user_id', $user->id)
+                    ->where('product_id', $productId)
+                    ->delete();
 
-        return response()->json(['message' => 'Removed']);
+        if ($deleted) {
+            return response()->json(['message' => 'Đã xóa sản phẩm']);
+        }
+        
+        return response()->json(['message' => 'Không tìm thấy sản phẩm'], 404);
     }
 }

@@ -1,30 +1,33 @@
-<!-- HEADER -->
-
 <div class="container mt-4">
-  <h2>Create Product</h2>
-  <form (ngSubmit)="create()" #createForm="ngForm">
-    <div class="mb-3">
-      <label class="form-label">Name</label>
-      <input type="text" class="form-control" [(ngModel)]="product.name" name="name" required>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Price</label>
-      <input type="number" class="form-control" [(ngModel)]="product.price" name="price" required>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Description</label>
-      <textarea class="form-control" [(ngModel)]="product.description" name="description"></textarea>
-    </div>
-    <div class="form-group">
-  <label>Số lượng</label>
-  <input type="number" [(ngModel)]="product.quantity" name="quantity" class="form-control" required>
-</div>
+  <h3>Thêm sản phẩm mới</h3>
 
-    <div class="mb-3">
-      <label class="form-label">Image URL</label>
-      <input type="text" class="form-control" [(ngModel)]="product.image" name="image">
-    </div>
-    <button class="btn btn-primary">Create</button>
-    <a class="btn btn-secondary" routerLink="/products">Cancel</a>
-  </form>
+  <div class="mb-3">
+    <label class="form-label">Tên sản phẩm</label>
+    <input type="text" class="form-control" [(ngModel)]="product.name">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Giá</label>
+    <input type="number" class="form-control" [(ngModel)]="product.price">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Số lượng</label>
+    <input type="number" class="form-control" [(ngModel)]="product.quantity">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Danh mục</label>
+    <select class="form-select" [(ngModel)]="product.category_id">
+      <option value="0">Chọn danh mục</option>
+      <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Mô tả</label>
+    <textarea class="form-control" [(ngModel)]="product.description"></textarea>
+  </div>
+
+  <button class="btn btn-primary" (click)="create()">Thêm sản phẩm</button>
 </div>

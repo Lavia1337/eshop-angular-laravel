@@ -1,35 +1,106 @@
-/* checkout.component.css */
-.container {
-  padding: 20px;
+/* Container chính: Tạo khung, đổ bóng cho giống phiếu thanh toán */
+.checkout-container {
   max-width: 500px;
-  margin: 0 auto;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  /* Hiệu ứng nổi */
 }
-input, select {
+
+/* Tiêu đề */
+.checkout-container h2 {
+  text-align: center;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+/* Hiển thị tổng tiền */
+.checkout-container p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  /* Căn giữa dòng tổng tiền luôn cho đẹp */
+}
+
+/* Định dạng Label để dễ nhìn hơn */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+  margin-top: 15px;
+}
+
+/* Input và Select */
+input,
+select {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
   font-size: 15px;
   height: 48px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
 }
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
+
+/* Hiệu ứng khi bấm vào ô nhập liệu */
+input:focus,
+select:focus {
+  border-color: #d70018;
+  /* Viền đỏ khi focus */
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(215, 0, 24, 0.1);
 }
-button.btn-primary {
+
+/* 🔥 NÚT ĐẶT HÀNG (YÊU CẦU CHÍNH) */
+.payment-btn {
+  /* 1. Màu sắc */
   background-color: #d70018;
   color: #fff;
-}
-button.btn-primary:hover {
-  background-color: #b60014;
-}
-p.total {
-  font-weight: 600;
+
+  /* 2. Kích thước & Font */
+  padding: 12px 40px;
   font-size: 16px;
-  color: #d70018;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  /* Bo tròn kiểu viên thuốc */
+  cursor: pointer;
+
+  /* 3. CĂN GIỮA (Quan trọng) */
+  display: block;
+  /* Biến thành khối để căn lề */
+  margin: 30px auto 0 auto;
+  /* Trên 30px, Trái/Phải auto (để giữa), Dưới 0 */
+  width: fit-content;
+  /* Chiều rộng ôm sát nội dung chữ */
+  min-width: 200px;
+  /* Đảm bảo nút không quá bé */
+
+  /* 4. Hiệu ứng */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(215, 0, 24, 0.3);
+}
+
+.payment-btn:hover {
+  background-color: #b60014;
+  transform: translateY(-2px);
+  /* Nhấc nhẹ nút lên khi di chuột */
+  box-shadow: 0 6px 15px rgba(215, 0, 24, 0.4);
+}
+
+/* Tin nhắn giỏ hàng trống */
+.empty-cart {
+  text-align: center;
+  color: #777;
+  font-style: italic;
 }

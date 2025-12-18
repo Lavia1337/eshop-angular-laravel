@@ -29,9 +29,9 @@ Route::apiResource('products', ProductController::class);
 */
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/cart/add', [CartController::class, 'add']);
+    Route::post('/cart', [CartController::class, 'add']);
     Route::get('/cart', [CartController::class, 'index']);
-    Route::post('/cart/remove', [CartController::class, 'remove']);
+    Route::delete('/cart/{productId}', [CartController::class, 'remove']);
 
 
     // Thanh toán & đơn hàng

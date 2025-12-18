@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService, Product } from '../../services/product.service';
-import { AuthService } from '../../services/auth.service'; // import AuthService
+import { CategoryService, Category } from '../../services/category.service';
 
 @Component({
   selector: 'app-product-edit',
@@ -10,57 +10,92 @@ import { AuthService } from '../../services/auth.service'; // import AuthService
 })
 export class ProductEditComponent implements OnInit {
 
-  product: Product = { name: '', price: 0, description: '', image: '' };
-  loading: boolean = true;  // thêm biến này
-  errors: any = {};
-  isAdmin: boolean = false; // thêm biến kiểm tra admin
+  product: Product = {
+    name: '',
+    price: 0,
+    description: '',
+    image: '',
+    quantity: 0,
+    category_id: 0
+  };
+
+  categories: Category[] = [];
 
   constructor(
-    private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService // inject AuthService
+    private productService: ProductService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
-    const id = +this.route.snapshot.params['id'];
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    // Lấy thông tin sản phẩm
+    // Load categories
+    this.categoryService.getAll().subscribe({
+      next: (cat) => this.categories = cat,
+      error: (err) => console.error('Lỗi load danh mục:', err)
+    });
+
+    // Load product details
     this.productService.getById(id).subscribe({
-  next: (data: Product) => {
-    this.product = data;
-    this.loading = false;
-  },
-  error: (err) => {
-    alert(err.error || 'Error loading product');
-    this.loading = false;
-  },
-  complete: () => {
-    console.log('Request completed');
-  }
-});
-
-
-    // Kiểm tra role người dùng
-    const user = this.authService.getCurrentUser(); // giả sử trả về {role: 'admin' | 'user'}
-    this.isAdmin = user?.role === 'admin';
+      next: (data) => {
+        this.product = {
+          id: data.id,
+          name: data.name,
+          price: data.price,
+          description: data.description,
+          image: data.image,
+          quantity: data.quantity ?? 0,
+          category_id: data.category_id ?? data.category?.id ?? 0
+        };
+      },
+      error: (err) => console.error('Lỗi load sản phẩm:', err)
+    });
   }
 
+  // =============================================
+  // UPDATE PRODUCT
+  // =============================================
   edit(): void {
-    if (!this.isAdmin) return alert('Bạn không có quyền sửa');
-    const id = +this.route.snapshot.params['id'];
-    this.productService.edit(id, this.product).subscribe(
-      () => this.router.navigateByUrl('/products'),
-      (err: any) => alert(err.error || 'Error updating product')
-    );
+    if (!this.product.id) {
+      alert('Không tìm thấy ID sản phẩm.');
+      return;
+    }
+
+    this.productService.edit(this.product.id, this.product).subscribe({
+      next: () => {
+        alert('Cập nhật sản phẩm thành công!');
+        this.router.navigateByUrl('/products');
+      },
+      error: (err) => {
+        alert(err.error?.message || 'Lỗi khi cập nhật sản phẩm');
+      }
+    });
   }
 
+  // =============================================
+  // DELETE PRODUCT
+  // =============================================
   delete(): void {
-    if (!this.isAdmin) return alert('Bạn không có quyền xóa');
-    const id = +this.route.snapshot.params['id'];
-    this.productService.delete(id).subscribe(
-      () => this.router.navigateByUrl('/products'),
-      (err: any) => alert(err.error || 'Error deleting product')
-    );
+    if (!this.product.id) {
+      alert('Không tìm thấy ID sản phẩm để xóa.');
+      return;
+    }
+
+    if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+      return;
+    }
+
+    this.productService.delete(this.product.id).subscribe({
+      next: () => {
+        alert('Xóa sản phẩm thành công!');
+        this.router.navigateByUrl('/products');
+      },
+      error: (err) => {
+        console.error(err);
+        alert(err.error?.message || 'Lỗi khi xóa sản phẩm');
+      }
+    });
   }
 }

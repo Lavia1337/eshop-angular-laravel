@@ -1,30 +1,42 @@
-<!-- HEADER -->
-
 <div class="container mt-4">
   <h2>Edit Product</h2>
   <form (ngSubmit)="edit()" #editForm="ngForm">
+
+    <!-- Name -->
     <div class="mb-3">
       <label class="form-label">Name</label>
       <input type="text" class="form-control" [(ngModel)]="product.name" name="name" required>
     </div>
+
+    <!-- Price -->
     <div class="mb-3">
       <label class="form-label">Price</label>
       <input type="number" class="form-control" [(ngModel)]="product.price" name="price" required>
     </div>
+
+    <!-- Description -->
     <div class="mb-3">
       <label class="form-label">Description</label>
       <textarea class="form-control" [(ngModel)]="product.description" name="description"></textarea>
     </div>
+
+    <!-- Image -->
     <div class="mb-3">
       <label class="form-label">Image URL</label>
       <input type="text" class="form-control" [(ngModel)]="product.image" name="image">
     </div>
-    <div *ngIf="isAdmin">
-  <button (click)="edit()" class="btn btn-primary">Sửa</button>
-  <button (click)="delete()" class="btn btn-danger">Xóa</button>
-</div>
 
-    <button class="btn btn-primary">Save</button>
+    <!-- Category -->
+    <div class="mb-3">
+      <label class="form-label">Category</label>
+      <select class="form-select" [(ngModel)]="product.category_id" name="category_id" required>
+        <option [ngValue]="0">-- Chọn danh mục --</option>
+        <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+
+    <!-- Action Buttons -->
+    <button type="submit" class="btn btn-success me-2">Save</button>
     <a class="btn btn-secondary" routerLink="/products">Cancel</a>
   </form>
 </div>

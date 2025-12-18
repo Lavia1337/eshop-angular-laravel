@@ -2,7 +2,7 @@
 .header {
   background-color: #d70018;
   padding: 0.5rem 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -32,12 +32,18 @@
 
 .btn-light {
   background-color: #fff;
-  color: #333;
+  color: #000;
   border: 1px solid #ccc;
+  transition: all 0.3s ease;
 }
 
 .btn-light:hover {
-  background-color: #f8f9fa;
+  border-color: #ff9900;
+  /* Viền đổi màu cam */
+  box-shadow: 0 0 10px #ff9900;
+  /* Hiệu ứng ửng sáng (glow) xung quanh màu cam */
+  color: #000;
+  /* Giữ nguyên chữ đen */
 }
 
 .btn-outline-light {
