@@ -14,12 +14,12 @@ export class ProductEditComponent implements OnInit {
     name: '',
     price: 0,
     description: '',
-    image: '',
     quantity: 0,
     category_id: 0
   };
 
   categories: Category[] = [];
+  newImageUrl: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -30,14 +30,16 @@ export class ProductEditComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (!id) {
+      alert('ID không hợp lệ');
+      this.router.navigate(['/products']);
+      return;
+    }
 
-    // Load categories
     this.categoryService.getAll().subscribe({
-      next: (cat) => this.categories = cat,
-      error: (err) => console.error('Lỗi load danh mục:', err)
+      next: (res) => this.categories = res
     });
 
-    // Load product details
     this.productService.getById(id).subscribe({
       next: (data) => {
         this.product = {
@@ -45,57 +47,50 @@ export class ProductEditComponent implements OnInit {
           name: data.name,
           price: data.price,
           description: data.description,
-          image: data.image,
           quantity: data.quantity ?? 0,
-          category_id: data.category_id ?? data.category?.id ?? 0
+          category_id: data.category_id ?? data.category?.id ?? 0,
+          images: data.images ?? []
         };
-      },
-      error: (err) => console.error('Lỗi load sản phẩm:', err)
+      }
     });
   }
 
-  // =============================================
-  // UPDATE PRODUCT
-  // =============================================
+  // =========================
+  // MAIN IMAGE (FIX NG9)
+  // =========================
+  get mainImage(): string | null {
+    return this.product.images?.length
+      ? this.product.images[0].image_path
+      : null;
+  }
+
   edit(): void {
-    if (!this.product.id) {
-      alert('Không tìm thấy ID sản phẩm.');
-      return;
-    }
+    if (!this.product.id) return;
 
     this.productService.edit(this.product.id, this.product).subscribe({
       next: () => {
-        alert('Cập nhật sản phẩm thành công!');
-        this.router.navigateByUrl('/products');
-      },
-      error: (err) => {
-        alert(err.error?.message || 'Lỗi khi cập nhật sản phẩm');
+        if (this.newImageUrl) {
+          this.productService
+            .addImageUrl(this.product.id!, this.newImageUrl)
+            .subscribe(() => {
+              alert('Cập nhật thành công');
+              this.router.navigate(['/products']);
+            });
+        } else {
+          alert('Cập nhật thành công');
+          this.router.navigate(['/products']);
+        }
       }
     });
   }
 
-  // =============================================
-  // DELETE PRODUCT
-  // =============================================
   delete(): void {
-    if (!this.product.id) {
-      alert('Không tìm thấy ID sản phẩm để xóa.');
-      return;
-    }
+    if (!this.product.id) return;
+    if (!confirm('Xóa sản phẩm?')) return;
 
-    if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
-      return;
-    }
-
-    this.productService.delete(this.product.id).subscribe({
-      next: () => {
-        alert('Xóa sản phẩm thành công!');
-        this.router.navigateByUrl('/products');
-      },
-      error: (err) => {
-        console.error(err);
-        alert(err.error?.message || 'Lỗi khi xóa sản phẩm');
-      }
+    this.productService.delete(this.product.id).subscribe(() => {
+      alert('Đã xóa');
+      this.router.navigate(['/products']);
     });
   }
 }

@@ -11,57 +11,50 @@ import { CategoryService, Category } from '../../services/category.service';
 })
 export class ProductIndexComponent implements OnInit {
 
-  searchKeyword: string = '';
-  cartItemCount: number = 0;
+  searchKeyword = '';
+  cartItemCount = 0;
 
-  // ===== USER INFO =====
+  // USER
   isLoggedIn = false;
   user: any = null;
   isAdmin = false;
 
-  // ===== PRODUCTS =====
+  // PRODUCTS
   products: Product[] = [];
   quantities: Record<number, number> = {};
-  loading: boolean = true;
+  loading = true;
 
-  // ===== CATEGORIES =====
+  // CATEGORIES
   categories: Category[] = [];
-  selectedCategory: number = 0;
+  selectedCategory = 0;
 
-  // 1. Danh sách link ảnh cho Slider (Thay link của bạn vào đây)
+  // SLIDER
   sliderImages: string[] = [
-    "https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:100/plain/https://dashboard.cellphones.com.vn/storage/iphone-17-1225-home.png",
-    "https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:100/plain/https://dashboard.cellphones.com.vn/storage/fold7-home-1225-v1.png",
-    "https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:100/plain/https://dashboard.cellphones.com.vn/storage/Redmi15Home-1225.png",
-    "https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/macbook-giao-xa.png"
+    'https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:100/plain/https://dashboard.cellphones.com.vn/storage/iphone-17-1225-home.png',
+    'https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:100/plain/https://dashboard.cellphones.com.vn/storage/fold7-home-1225-v1.png',
+    'https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/Redmi15Home-1225.png'
   ];
 
-  // 2. Danh sách 2 ảnh nhỏ tĩnh bên dưới slider (nếu cần)
   subBanners: string[] = [
-    "https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/a17-right-1125.png",
-    "https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/macbook-giao-xa.png"
+    'https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/a17-right-1125.png',
+    'https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/macbook-giao-xa.png'
   ];
-
 
   constructor(
     private productService: ProductService,
     private router: Router,
     private cartService: CartService,
     private categoryService: CategoryService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadUser();
     this.loadCategories();
     this.loadProducts();
-
-    // if (this.isLoggedIn) {
-    //   this.updateCartCount();
-    // }
   }
 
   // ======================
-  // LOAD USER
+  // USER
   // ======================
   loadUser(): void {
     const token = localStorage.getItem('token');
@@ -78,22 +71,22 @@ export class ProductIndexComponent implements OnInit {
   }
 
   // ======================
-  // LOAD CATEGORIES
+  // CATEGORIES
   // ======================
   loadCategories(): void {
     this.categoryService.getAll().subscribe({
       next: (data) => this.categories = data,
-      error: (err) => console.error('Lỗi load danh mục:', err)
+      error: (err) => console.error(err)
     });
   }
 
   // ======================
-  // LOAD PRODUCTS
+  // PRODUCTS
   // ======================
   loadProducts(): void {
     this.loading = true;
     this.productService.getAll().subscribe({
-      next: (data: Product[]) => {
+      next: (data) => {
         this.products = data;
         this.products.forEach(p => {
           if (p.id !== undefined) {
@@ -102,16 +95,10 @@ export class ProductIndexComponent implements OnInit {
         });
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Lỗi load sản phẩm:', err);
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
 
-  // ======================
-  // FILTER BY CATEGORY
-  // ======================
   filterByCategory(categoryId: number | null): void {
     this.selectedCategory = categoryId ?? 0;
 
@@ -126,18 +113,20 @@ export class ProductIndexComponent implements OnInit {
         this.products = data.filter(p => p.category_id === categoryId);
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Lỗi lọc sản phẩm:', err);
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
+  }
+
+  // ======================
+  // IMAGE SAFE GETTER
+  // ======================
+  getMainImage(product: Product): string {
+    return product.images?.[0]?.image_path ?? 'assets/no-image.png';
   }
 
   // ======================
   // CART
   // ======================
-
-
   addToCart(productId?: number): void {
     if (!productId) return;
 
@@ -147,37 +136,14 @@ export class ProductIndexComponent implements OnInit {
       return;
     }
 
-    const quantity = this.quantities[productId] ?? 1;
+    const qty = this.quantities[productId] ?? 1;
 
-    this.cartService.addToCart(productId, quantity).subscribe({
-      next: () => {
-        //alert('Đã thêm vào giỏ hàng!');
-        // this.updateCartCount();
-      },
-      error: () => alert('Không thể thêm vào giỏ hàng!')
+    this.cartService.addToCart(productId, qty).subscribe({
+      error: () => alert('Không thể thêm vào giỏ hàng')
     });
   }
 
-
-  viewProduct(id?: number) {
+  viewProduct(id?: number): void {
     if (id) this.router.navigate(['/products', id]);
   }
-
-  // ======================
-  // NAVIGATION
-  // ======================
-  // goHome() { this.router.navigate(['/products']); }
-  // goLogin() { this.router.navigate(['/login']); }
-  // goCart() { this.router.navigate(['/cart']); }
-  // addProductModal() { this.router.navigate(['/admin/products/create']); }
-
-  // logout() {
-  //   localStorage.removeItem('token');
-  //   localStorage.removeItem('user');
-  //   this.isLoggedIn = false;
-  //   this.user = null;
-  //   this.cartItemCount = 0;
-  //   this.router.navigate(['/products']);
-  // }
-
 }

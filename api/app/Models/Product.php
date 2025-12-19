@@ -9,32 +9,58 @@ class Product extends Model
 {
     use HasFactory;
 
+    /**
+     * Các cột cho phép mass assignment
+     */
     protected $fillable = [
-        'name', 'price', 'quantity', 'description', 'category_id', 'image'
+        'name',
+        'price',
+        'quantity',
+        'description',
+        'category_id',
     ];
 
+    // =====================
+    // RELATIONSHIPS
+    // =====================
 
-
-    public function category() {
+    /**
+     * Product thuộc về 1 Category
+     */
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-  public function images()
-{
-    return $this->hasMany(ProductImage::class);
-}
+    /**
+     * Product có nhiều ảnh (product_images)
+     */
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 
-
-    public function reviews() {
+    /**
+     * Product có nhiều Review
+     */
+    public function reviews()
+    {
         return $this->hasMany(Review::class);
     }
 
-    public function cartItems() {
+    /**
+     * Product xuất hiện trong nhiều CartItem
+     */
+    public function cartItems()
+    {
         return $this->hasMany(CartItem::class);
     }
 
-    public function orderItems() {
+    /**
+     * Product xuất hiện trong nhiều OrderItem
+     */
+    public function orderItems()
+    {
         return $this->hasMany(OrderItem::class);
     }
-    
 }

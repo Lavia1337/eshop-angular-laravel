@@ -2,20 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// ====================================================================
-// Interface cho hình ảnh của sản phẩm
-// ====================================================================
+// ==================================================
+// PRODUCT IMAGE
+// ==================================================
 export interface ProductImage {
   id: number;
   product_id: number;
   image_path: string;
 }
 
-// ====================================================================
-// Interface Product đầy đủ
-// ====================================================================
+// ==================================================
+// PRODUCT (KHÔNG CHỨA IMAGE URL)
+// ==================================================
 export interface Product {
-
   id?: number;
   name: string;
   price: number;
@@ -23,27 +22,22 @@ export interface Product {
   description?: string;
   quantity?: number;
 
-  // Ảnh đại diện (tùy API)
-  image?: string;
-
-  // Nhiều ảnh (gallery)
+  // Gallery ảnh (load từ backend)
   images?: ProductImage[];
 
-  // Object category khi load từ backend
+  // Category
   category?: {
     id: number;
     name: string;
   };
 
-  // CATEGORY ID – bắt buộc khi CREATE/EDIT
   category_id: number;
-
   status?: boolean;
 }
 
-// ====================================================================
+// ==================================================
 // SERVICE
-// ====================================================================
+// ==================================================
 @Injectable({
   providedIn: 'root'
 })
@@ -53,28 +47,48 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  // Lấy tất cả sản phẩm
+  // ==========================
+  // GET ALL
+  // ==========================
   getAll(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
-  // Lấy theo ID
+  // ==========================
+  // GET BY ID
+  // ==========================
   getById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
-  // Tạo sản phẩm
+  // ==========================
+  // CREATE PRODUCT
+  // ==========================
   create(data: Product): Observable<Product> {
     return this.http.post<Product>(this.apiUrl, data);
   }
 
-  // Cập nhật sản phẩm
+  // ==========================
+  // UPDATE PRODUCT
+  // ==========================
   edit(id: number, data: Product): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, data);
   }
 
-  // Xóa sản phẩm
+  // ==========================
+  // DELETE PRODUCT
+  // ==========================
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  // ==========================
+  // ADD IMAGE URL → product_images
+  // ==========================
+  addImageUrl(productId: number, imageUrl: string): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/${productId}/images/url`,
+      { image_url: imageUrl }
+    );
   }
 }

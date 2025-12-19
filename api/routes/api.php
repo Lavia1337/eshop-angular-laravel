@@ -10,56 +10,48 @@ use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
-| PUBLIC ROUTES (KHÔNG CẦN ĐĂNG NHẬP)
+| PUBLIC ROUTES
 |--------------------------------------------------------------------------
 */
 
-// Authentication
+// AUTH
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Categories & Products (public)
+// CATEGORIES & PRODUCTS
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
 
 /*
 |--------------------------------------------------------------------------
-| PROTECTED ROUTES (CẦN TOKEN – auth:sanctum)
+| PROTECTED ROUTES (auth:sanctum)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth:sanctum')->group(function () {
+
+    // CART
     Route::post('/cart', [CartController::class, 'add']);
     Route::get('/cart', [CartController::class, 'index']);
     Route::delete('/cart/{productId}', [CartController::class, 'remove']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | ORDERS
-    | - USER  : xem đơn của mình
-    | - ADMIN : xem TẤT CẢ đơn
-    |--------------------------------------------------------------------------
-    */
+    // ORDERS
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::post('/orders/checkout', [OrderController::class, 'checkout']);
-
-    // ADMIN: cập nhật trạng thái đơn
     Route::put('/orders/{id}/status', [OrderController::class, 'updateStatus']);
-
-    // ✅ ADMIN: CẬP NHẬT TOÀN BỘ ĐƠN HÀNG (SỬA 405)
     Route::put('/orders/{id}', [OrderController::class, 'update']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | REVIEWS
-    |--------------------------------------------------------------------------
-    */
+    // ======================
+    // PRODUCT IMAGES (ADMIN)
+    // ======================
+    Route::post(
+        '/products/{id}/images/url',
+        [ProductController::class, 'storeImageUrl']
+    );
+
+    // REVIEWS
     Route::post('/reviews', [ReviewController::class, 'store']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | LOGOUT
-    |--------------------------------------------------------------------------
-    */
+    // LOGOUT
     Route::post('/logout', [AuthController::class, 'logout']);
 });

@@ -7,11 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductImage extends Model
 {
-    protected $fillable = ['product_id', 'image_path'];
+    use HasFactory;
 
+    protected $table = 'product_images';
+
+    protected $fillable = [
+        'product_id',
+        'image_path'
+    ];
+
+    // Quan hệ: 1 ảnh thuộc về 1 sản phẩm
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
 }
-

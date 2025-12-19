@@ -1,42 +1,80 @@
+<app-header></app-header>
+
 <div class="container mt-4">
   <h2>Edit Product</h2>
+
   <form (ngSubmit)="edit()" #editForm="ngForm">
 
-    <!-- Name -->
+    <!-- NAME -->
     <div class="mb-3">
       <label class="form-label">Name</label>
-      <input type="text" class="form-control" [(ngModel)]="product.name" name="name" required>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="product.name"
+        name="name"
+        required>
     </div>
 
-    <!-- Price -->
+    <!-- PRICE -->
     <div class="mb-3">
       <label class="form-label">Price</label>
-      <input type="number" class="form-control" [(ngModel)]="product.price" name="price" required>
+      <input
+        type="number"
+        class="form-control"
+        [(ngModel)]="product.price"
+        name="price"
+        required>
     </div>
 
-    <!-- Description -->
+    <!-- DESCRIPTION -->
     <div class="mb-3">
       <label class="form-label">Description</label>
-      <textarea class="form-control" [(ngModel)]="product.description" name="description"></textarea>
+      <textarea
+        class="form-control"
+        [(ngModel)]="product.description"
+        name="description"></textarea>
     </div>
 
-    <!-- Image -->
+    <!-- CURRENT IMAGE -->
+    <div class="mb-3" *ngIf="mainImage">
+      <label class="form-label">Current Image</label><br>
+      <img
+        [src]="mainImage"
+        class="img-thumbnail"
+        style="max-height:200px">
+    </div>
+
+    <!-- NEW IMAGE URL -->
     <div class="mb-3">
-      <label class="form-label">Image URL</label>
-      <input type="text" class="form-control" [(ngModel)]="product.image" name="image">
+      <label class="form-label">New Image URL</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newImageUrl"
+        name="newImageUrl"
+        placeholder="https://...">
     </div>
 
-    <!-- Category -->
+    <!-- CATEGORY -->
     <div class="mb-3">
       <label class="form-label">Category</label>
-      <select class="form-select" [(ngModel)]="product.category_id" name="category_id" required>
+      <select
+        class="form-select"
+        [(ngModel)]="product.category_id"
+        name="category_id"
+        required>
         <option [ngValue]="0">-- Chọn danh mục --</option>
-        <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.name }}</option>
+        <option *ngFor="let c of categories" [ngValue]="c.id">
+          {{ c.name }}
+        </option>
       </select>
     </div>
 
-    <!-- Action Buttons -->
+    <!-- ACTION -->
     <button type="submit" class="btn btn-success me-2">Save</button>
+    <button type="button" class="btn btn-danger me-2" (click)="delete()">Delete</button>
     <a class="btn btn-secondary" routerLink="/products">Cancel</a>
+
   </form>
 </div>
