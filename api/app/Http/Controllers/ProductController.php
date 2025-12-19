@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     /**
-     * Lấy danh sách sản phẩm cùng images và category
+     * GET /products
      */
     public function index()
     {
@@ -17,7 +17,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Lấy chi tiết sản phẩm theo ID
+     * GET /products/{id}
      */
     public function show($id)
     {
@@ -25,39 +25,24 @@ class ProductController extends Controller
     }
 
     /**
-     * Thêm sản phẩm mới
+     * POST /products
+     * ❌ KHÔNG lưu ảnh ở đây
      */
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'name'        => 'required|string',
-        'price'       => 'required|numeric',
-        'quantity'    => 'required|integer|min:0',
-        'description' => 'nullable|string',
-        'category_id' => 'required|exists:categories,id', // bắt buộc
-        'image'       => 'nullable|string'
-    ]);
-
-    $product = Product::create([
-        'name'        => $validated['name'],
-        'price'       => $validated['price'],
-        'quantity'    => $validated['quantity'],
-        'description' => $validated['description'] ?? null,
-        'category_id' => $validated['category_id'] // ✅ đảm bảo category_id lưu
-    ]);
-
-    if (!empty($validated['image'])) {
-        ProductImage::create([
-            'product_id' => $product->id,
-            'image_path' => $validated['image']
+    {
+        $validated = $request->validate([
+            'name'        => 'required|string',
+            'price'       => 'required|numeric',
+            'quantity'    => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
         ]);
+
+        return Product::create($validated);
     }
 
-    return $product->load(['images', 'category']);
-}
-
     /**
-     * Cập nhật sản phẩm
+     * PUT /products/{id}
      */
     public function update(Request $request, $id)
     {
@@ -67,36 +52,46 @@ class ProductController extends Controller
             'quantity'    => 'required|integer|min:0',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'image'       => 'nullable|string'
         ]);
 
         $product = Product::findOrFail($id);
-
         $product->update($validated);
-
-        // Nếu có ảnh mới, thêm vào bảng ProductImage
-        if (!empty($validated['image'])) {
-            ProductImage::create([
-                'product_id' => $product->id,
-                'image_path' => $validated['image']
-            ]);
-        }
 
         return $product->load(['images', 'category']);
     }
 
     /**
-     * Xóa sản phẩm
+     * DELETE /products/{id}
      */
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
 
-        // Xóa luôn ảnh liên quan nếu muốn
         $product->images()->delete();
-
         $product->delete();
 
         return response()->json(['message' => 'Deleted']);
+    }
+
+    /**
+     * POST /products/{id}/images/url
+     * ✅ LƯU URL ẢNH VÀO product_images
+     */
+    public function storeImageUrl(Request $request, $id)
+    {
+        $request->validate([
+            'image_url' => 'required|url'
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $image = $product->images()->create([
+            'image_path' => $request->image_url
+        ]);
+
+        return response()->json([
+            'message' => 'Lưu ảnh thành công',
+            'image'   => $image
+        ], 201);
     }
 }

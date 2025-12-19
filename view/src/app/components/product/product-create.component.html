@@ -1,33 +1,113 @@
+<app-header></app-header>
+
 <div class="container mt-4">
+
   <h3>Thêm sản phẩm mới</h3>
 
+  <!-- =======================
+       TÊN SẢN PHẨM
+  ======================== -->
   <div class="mb-3">
     <label class="form-label">Tên sản phẩm</label>
-    <input type="text" class="form-control" [(ngModel)]="product.name">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="product.name"
+      required
+    >
   </div>
 
+  <!-- =======================
+       GIÁ
+  ======================== -->
   <div class="mb-3">
     <label class="form-label">Giá</label>
-    <input type="number" class="form-control" [(ngModel)]="product.price">
+    <input
+      type="number"
+      class="form-control"
+      [(ngModel)]="product.price"
+      min="0"
+      required
+    >
   </div>
 
+  <!-- =======================
+       SỐ LƯỢNG
+  ======================== -->
   <div class="mb-3">
     <label class="form-label">Số lượng</label>
-    <input type="number" class="form-control" [(ngModel)]="product.quantity">
+    <input
+      type="number"
+      class="form-control"
+      [(ngModel)]="product.quantity"
+      min="0"
+    >
   </div>
 
+  <!-- =======================
+       DANH MỤC
+  ======================== -->
   <div class="mb-3">
     <label class="form-label">Danh mục</label>
-    <select class="form-select" [(ngModel)]="product.category_id">
-      <option value="0">Chọn danh mục</option>
-      <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+    <select
+      class="form-select"
+      [(ngModel)]="product.category_id"
+      required
+    >
+      <option [ngValue]="0">Chọn danh mục</option>
+      <option
+        *ngFor="let c of categories"
+        [ngValue]="c.id"
+      >
+        {{ c.name }}
+      </option>
     </select>
   </div>
 
+  <!-- =======================
+       ẢNH SẢN PHẨM (URL)
+  ======================== -->
   <div class="mb-3">
-    <label class="form-label">Mô tả</label>
-    <textarea class="form-control" [(ngModel)]="product.description"></textarea>
+    <label class="form-label">Ảnh sản phẩm (URL)</label>
+    <input
+      type="url"
+      class="form-control"
+      [(ngModel)]="imageUrl"
+      placeholder="https://example.com/image.jpg"
+    >
   </div>
 
-  <button class="btn btn-primary" (click)="create()">Thêm sản phẩm</button>
+  <!-- PREVIEW ẢNH -->
+  <div class="mb-3" *ngIf="imageUrl">
+    <label class="form-label">Xem trước ảnh</label><br>
+    <img
+      [src]="imageUrl"
+      alt="Preview"
+      class="img-thumbnail"
+      style="max-height: 200px"
+    >
+  </div>
+
+  <!-- =======================
+       MÔ TẢ
+  ======================== -->
+  <div class="mb-3">
+    <label class="form-label">Mô tả</label>
+    <textarea
+      class="form-control"
+      rows="4"
+      [(ngModel)]="product.description"
+    ></textarea>
+  </div>
+
+  <!-- =======================
+       BUTTON
+  ======================== -->
+  <button
+    class="btn btn-primary"
+    (click)="create()"
+  >
+    Thêm sản phẩm
+  </button>
+
 </div>

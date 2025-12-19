@@ -12,9 +12,10 @@ import { CartService } from '../../services/cart.service';
 export class ProductDetailComponent implements OnInit {
 
   product: Product | null = null;
-  loading: boolean = true;
-  isAdmin: boolean = false;
-  quantities: { [key: number]: number } = {};
+  loading = true;
+  isAdmin = false;
+
+  quantities: { [productId: number]: number } = {};
 
   constructor(
     private productService: ProductService,
@@ -25,68 +26,77 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = +this.route.snapshot.params['id'];
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    // Lấy thông tin product
+    if (!id) {
+      this.router.navigate(['/products']);
+      return;
+    }
+
+    // LOAD PRODUCT
     this.productService.getById(id).subscribe({
-      next: (data: Product) => {
+      next: (data) => {
         this.product = data;
         this.loading = false;
-        // Gán số lượng mặc định
-        if (data.id) this.quantities[data.id] = 1;
+
+        if (data.id) {
+          this.quantities[data.id] = 1;
+        }
       },
-      error: (err) => {
-        alert(err.error || 'Error loading product');
+      error: () => {
+        alert('Không thể tải sản phẩm');
         this.loading = false;
       }
     });
 
-    // Load user từ AuthService / localStorage
     const user = this.authService.getCurrentUser() || this.getUserFromLocal();
     this.isAdmin = user?.role?.toLowerCase() === 'admin';
   }
 
-  // Nếu AuthService không trả về, fallback từ localStorage
-  getUserFromLocal() {
+  // =============================
+  // SAFE MAIN IMAGE (STRICT MODE)
+  // =============================
+  get mainImage(): string | null {
+    if (!this.product?.images || this.product.images.length === 0) {
+      return null;
+    }
+    return this.product.images[0].image_path;
+  }
+
+  private getUserFromLocal(): any {
     const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData) : null;
   }
 
-  // Admin: sửa sản phẩm
   edit(): void {
-    if (!this.isAdmin) return alert('Bạn không có quyền sửa');
-    if (!this.product?.id) return;
-
-    this.router.navigate(['/admin/products/edit', this.product.id]);
+    if (this.product?.id) {
+      this.router.navigate(['/admin/products/edit', this.product.id]);
+    }
   }
 
-  // Admin: xóa sản phẩm
   delete(): void {
-    if (!this.isAdmin) return alert('Bạn không có quyền xóa');
     if (!this.product?.id) return;
 
+    if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
+
     this.productService.delete(this.product.id).subscribe({
-      next: () => this.router.navigate(['/products']),
-      error: (err) => alert(err.error || 'Error deleting product')
+      next: () => {
+        alert('Xóa sản phẩm thành công');
+        this.router.navigate(['/products']);
+      }
     });
   }
 
-  // Thêm vào giỏ hàng
   addToCart(productId?: number): void {
     if (!productId) return;
 
     const quantity = this.quantities[productId] ?? 1;
 
     this.cartService.addToCart(productId, quantity).subscribe({
-      next: () => alert('Đã thêm vào giỏ hàng!'),
-      error: (err) => {
-        console.error(err);
-        alert('Không thể thêm vào giỏ hàng!');
-      }
+      next: () => alert('Đã thêm vào giỏ hàng')
     });
   }
 
-  // Quay lại danh sách
   goBack(): void {
     this.router.navigate(['/products']);
   }

@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <div class="main-wrapper py-4" style="background-color: #f4f6f8; min-height: 100vh;">
   <div class="container">
 =======
@@ -20,12 +21,15 @@
 >>>>>>> 698eda5 (them giam sat don hang)
 =======
 
+=======
+>>>>>>> 2829bbb (them giam sat don hang)
 <div class="main-wrapper py-4" style="background-color: #f4f6f8; min-height: 100vh;">
   <div class="container">
 >>>>>>> 13998e8 (Resolve merge conflicts in routing and component files; update header and product index components for improved navigation and styling.)
 
     <div class="row g-3 mb-4">
 
+      <!-- CATEGORY -->
       <div class="col-lg-3 d-none d-lg-block">
         <div class="category-box bg-white rounded shadow-sm h-100">
           <h6 class="fw-bold p-3 border-bottom m-0 d-flex align-items-center gap-2">
@@ -36,8 +40,9 @@
               <span>📱</span> Tất cả sản phẩm
               <i class="fas fa-chevron-right float-end opacity-50"></i>
             </li>
-            <li *ngFor="let c of categories" (click)="filterByCategory(c.id ?? 0)"
-              [class.active]="selectedCategory === c.id">
+            <li *ngFor="let c of categories"
+                (click)="filterByCategory(c.id ?? 0)"
+                [class.active]="selectedCategory === c.id">
               <span>🔹</span> {{ c.name }}
               <i class="fas fa-chevron-right float-end opacity-50"></i>
             </li>
@@ -47,24 +52,41 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 13998e8 (Resolve merge conflicts in routing and component files; update header and product index components for improved navigation and styling.)
+=======
+      <!-- SLIDER -->
+>>>>>>> 2829bbb (them giam sat don hang)
       <div class="col-lg-6 col-md-12">
-        <div id="promoCarousel" class="carousel slide shadow-sm rounded overflow-hidden mb-2" data-bs-ride="carousel"
-          data-bs-interval="3000">
+        <div id="promoCarousel"
+             class="carousel slide shadow-sm rounded overflow-hidden mb-2"
+             data-bs-ride="carousel"
+             data-bs-interval="3000">
+
           <div class="carousel-indicators">
-            <button *ngFor="let img of sliderImages; let i = index" type="button" data-bs-target="#promoCarousel"
-              [attr.data-bs-slide-to]="i" [class.active]="i === 0"></button>
+            <button *ngFor="let img of sliderImages; let i = index"
+                    type="button"
+                    data-bs-target="#promoCarousel"
+                    [attr.data-bs-slide-to]="i"
+                    [class.active]="i === 0">
+            </button>
           </div>
+
           <div class="carousel-inner">
-            <div *ngFor="let img of sliderImages; let i = index" class="carousel-item" [class.active]="i === 0">
+            <div *ngFor="let img of sliderImages; let i = index"
+                 class="carousel-item"
+                 [class.active]="i === 0">
               <img [src]="img" class="d-block w-100 main-slider-img" alt="Slide">
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+
+          <button class="carousel-control-prev" type="button"
+                  data-bs-target="#promoCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
           </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+          <button class="carousel-control-next" type="button"
+                  data-bs-target="#promoCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
           </button>
         </div>
@@ -78,9 +100,12 @@
         </div>
       </div>
 
+      <!-- PROMOTION -->
       <div class="col-lg-3 d-none d-lg-block">
         <div class="promotion-box bg-white rounded shadow-sm h-100 p-3">
-          <h6 class="fw-bold mb-3 text-danger text-uppercase border-bottom pb-2">🔥 Ưu đãi Hot</h6>
+          <h6 class="fw-bold mb-3 text-danger text-uppercase border-bottom pb-2">
+            🔥 Ưu đãi Hot
+          </h6>
           <ul class="list-unstyled promotion-list">
             <li><span class="badge bg-primary me-2">NEW</span>Thu cũ lên đời - Trợ giá 1tr</li>
             <li><span class="badge bg-danger me-2">HOT</span>Giảm 50% gói bảo hành</li>
@@ -88,7 +113,8 @@
             <li><span class="badge bg-warning text-dark me-2">VIP</span>Trả góp 0% lãi suất</li>
           </ul>
           <div class="mt-3">
-            <img src="../../../assets/favicon_io/favicon-32x32.png" class="img-fluid rounded">
+            <img src="../../../assets/favicon_io/favicon-32x32.png"
+                 class="img-fluid rounded">
           </div>
         </div>
       </div>
@@ -153,66 +179,86 @@
 =======
 >>>>>>> 13998e8 (Resolve merge conflicts in routing and component files; update header and product index components for improved navigation and styling.)
     </div>
+
+    <!-- PRODUCTS -->
     <div class="product-section">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold text-uppercase m-0" style="color: #444;">
           Sản phẩm nổi bật
         </h4>
-        <a href="#" class="text-decoration-none text-muted small">Xem tất cả ></a>
+        <a href="#" class="text-decoration-none text-muted small">
+          Xem tất cả >
+        </a>
       </div>
 
       <div *ngIf="products.length > 0; else loading" class="row g-3">
 
-        <div *ngFor="let product of products" class="col-xl-3 col-lg-4 col-md-6 col-6">
+        <div *ngFor="let product of products"
+             class="col-xl-3 col-lg-4 col-md-6 col-6">
+
           <div class="product-card card h-100 border-0 shadow-sm">
 
+            <!-- ✅ FIX IMAGE – GIỮ NGUYÊN LAYOUT -->
             <div class="card-img-wrapper" (click)="viewProduct(product.id)">
               <div class="badge-discount">-15%</div>
-              <img *ngIf="product.image" [src]="'http://localhost:8000/storage/' + product.image" class="card-img-top"
+              <img
+                [src]="getMainImage(product)"
+                class="card-img-top"
                 alt="{{ product.name }}">
             </div>
 
             <div class="card-body d-flex flex-column p-3">
-              <h6 class="card-title fw-bold" (click)="viewProduct(product.id)" title="{{ product.name }}">
+              <h6 class="card-title fw-bold"
+                  (click)="viewProduct(product.id)"
+                  title="{{ product.name }}">
                 {{ product.name }}
               </h6>
 
               <div class="price-box mb-2">
-                <span class="current-price">{{ product.price | currency:'VND' }}</span>
+                <span class="current-price">
+                  {{ product.price | currency:'VND' }}
+                </span>
                 <span class="old-price text-muted text-decoration-line-through small ms-2">
-                  {{ (product.price * 1.15) | currency:'VND' }}
+                  {{ product.price * 1.15 | currency:'VND' }}
                 </span>
               </div>
 
               <div class="stock-status mb-2">
-                <span class="badge bg-light text-dark border" *ngIf="(product.quantity ?? 0) > 0">
+                <span class="badge bg-light text-dark border"
+                      *ngIf="(product.quantity ?? 0) > 0">
                   ✅ Còn hàng
                 </span>
-                <span class="badge bg-secondary" *ngIf="(product.quantity ?? 0) <= 0">
+                <span class="badge bg-secondary"
+                      *ngIf="(product.quantity ?? 0) <= 0">
                   ❌ Hết hàng
                 </span>
               </div>
 
               <div class="mt-auto action-area">
 
-                <div *ngIf="product.id !== undefined" class="d-flex align-items-center mb-2 gap-2">
+                <div *ngIf="product.id !== undefined"
+                     class="d-flex align-items-center mb-2 gap-2">
                   <small class="text-muted">SL:</small>
-                  <input type="number" min="1" class="form-control form-control-sm text-center qty-input"
-                    [(ngModel)]="quantities[product.id]" />
+                  <input type="number"
+                         min="1"
+                         class="form-control form-control-sm text-center qty-input"
+                         [(ngModel)]="quantities[product.id]" />
                 </div>
 
                 <div class="d-grid gap-2">
-                  <button class="btn btn-danger btn-sm fw-bold" (click)="addToCart(product.id)">
+                  <button class="btn btn-danger btn-sm fw-bold"
+                          (click)="addToCart(product.id)">
                     <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
                   </button>
-                  <button class="btn btn-outline-dark btn-sm" (click)="viewProduct(product.id)">
+                  <button class="btn btn-outline-dark btn-sm"
+                          (click)="viewProduct(product.id)">
                     Xem chi tiết
                   </button>
                 </div>
 
               </div>
-
             </div>
+
           </div>
         </div>
 
@@ -225,15 +271,19 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 13998e8 (Resolve merge conflicts in routing and component files; update header and product index components for improved navigation and styling.)
+=======
+>>>>>>> 2829bbb (them giam sat don hang)
 <ng-template #loading>
   <div class="text-center py-5">
     <div class="spinner-border text-danger" role="status"></div>
     <p class="mt-2 text-muted">Đang tải sản phẩm...</p>
   </div>
 </ng-template>
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 =======
@@ -259,3 +309,5 @@
     <a href="#">Mua sắm online</a>
   </div>
 </div> -->
+=======
+>>>>>>> 2829bbb (them giam sat don hang)
