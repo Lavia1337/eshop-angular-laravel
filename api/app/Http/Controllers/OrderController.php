@@ -3,112 +3,170 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\CartItem;
 
 class OrderController extends Controller
 {
-    /**
-     * Lấy danh sách đơn hàng của user hiện tại
-     */
-    public function index()
+    // ==================================================
+    // USER: xem đơn của mình
+    // ADMIN: xem TẤT CẢ đơn
+    // ==================================================
+    public function index(): JsonResponse
     {
-        $orders = Order::with(['items.product']) // Eager load để lấy luôn thông tin sản phẩm
-            ->where('user_id', auth()->id())
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $user = Auth::user();
 
-        return response()->json([
-            'orders' => $orders
-        ]);
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        if ($user->role === 'admin') {
+            // ADMIN: tất cả đơn
+            $orders = Order::with(['items.product', 'user'])
+                ->orderByDesc('created_at')
+                ->get();
+        } else {
+            // USER: đơn của mình
+            $orders = Order::with('items.product')
+                ->where('user_id', $user->id)
+                ->orderByDesc('created_at')
+                ->get();
+        }
+
+        return response()->json($orders);
     }
 
-    /**
-     * Tạo đơn hàng mới (Checkout từ giỏ hàng)
-     */
-    public function checkout(Request $request)
+    // ==================================================
+    // USER: CHECKOUT
+    // ==================================================
+    public function checkout(Request $request): JsonResponse
     {
-        // 1. Validate dữ liệu đầu vào (ví dụ địa chỉ giao hàng)
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
         $request->validate([
-            'address' => 'required|string|max:255', 
-            'payment_method' => 'required|string'
+            'address' => 'required|string|max:255',
+            'payment_method' => 'required|string|max:50',
         ]);
 
-        // 2. Lấy các sản phẩm trong giỏ hàng của user
         $cartItems = CartItem::with('product')
-            ->where('user_id', auth()->id())
+            ->where('user_id', $user->id)
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return response()->json(['error' => 'Cart is empty'], 400);
+            return response()->json(['message' => 'Cart is empty'], 400);
         }
 
-        // 3. Tính tổng tiền (Total)
-        $total = 0;
-        foreach ($cartItems as $item) {
-            // Giả sử model Product có trường 'price'
-            $total += $item->product->price * $item->quantity;
-        }
-
-        // 4. Sử dụng Transaction để đảm bảo an toàn dữ liệu
         DB::beginTransaction();
 
         try {
-            // A. Tạo Order
+            $total = $cartItems->sum(
+                fn ($item) => $item->product->price * $item->quantity
+            );
+
             $order = Order::create([
-                'user_id'    => auth()->id(),
-                'total'      => $total,
-                'status'     => 'pending', // Trạng thái mặc định
-                'shipping_address' => $request->address, // Map dữ liệu từ Angular vào cột DB
-                'payment_method' => $request->payment_method
+                'user_id' => $user->id,
+                'total' => $total,
+                'status' => 'pending',
+                'shipping_address' => $request->address,
+                'payment_method' => $request->payment_method,
             ]);
 
-            // B. Tạo Order Items (Chuyển từ CartItem sang OrderItem)
             foreach ($cartItems as $item) {
                 OrderItem::create([
-                    'order_id'   => $order->id,
+                    'order_id' => $order->id,
                     'product_id' => $item->product_id,
-                    'quantity'   => $item->quantity,
-                    'price'      => $item->product->price, // Quan trọng: Lưu giá tại thời điểm mua
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
                 ]);
             }
 
-            // C. Xóa giỏ hàng sau khi đặt thành công
-            CartItem::where('user_id', auth()->id())->delete();
+            CartItem::where('user_id', $user->id)->delete();
 
-            // Commit transaction
             DB::commit();
 
             return response()->json([
                 'message' => 'Order created successfully',
-                'order_id' => $order->id
+                'order_id' => $order->id,
             ], 201);
 
-        } catch (\Exception $e) {
-            // Nếu có lỗi, hoàn tác mọi thay đổi
+        } catch (\Throwable $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Order failed', 'message' => $e->getMessage()], 500);
+
+            return response()->json([
+                'message' => 'Order failed',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
-    /**
-     * Xem chi tiết một đơn hàng cụ thể
-     */
-    public function show($id)
+    // ==================================================
+    // USER: CHI TIẾT ĐƠN (CHỈ ĐƠN CỦA MÌNH)
+    // ==================================================
+    public function show(int $id): JsonResponse
     {
-        $order = Order::with(['items.product', 'address', 'payment'])
-            ->where('user_id', auth()->id())
-            ->where('id', $id)
-            ->first();
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        $query = Order::with('items.product')->where('id', $id);
+
+        if ($user->role !== 'admin') {
+            $query->where('user_id', $user->id);
+        }
+
+        $order = $query->first();
 
         if (!$order) {
-            return response()->json(['error' => 'Order not found'], 404);
+            return response()->json(['message' => 'Order not found'], 404);
         }
 
-        return response()->json([
-            'order' => $order
-        ]);
+        return response()->json($order);
     }
+
+    // ==================================================
+    // ADMIN: CẬP NHẬT TRẠNG THÁI
+    // ==================================================
+    public function update(Request $request, int $id): JsonResponse
+{
+    $user = Auth::user();
+
+    if (!$user || $user->role !== 'admin') {
+        return response()->json(['message' => 'Forbidden'], 403);
+    }
+
+    $request->validate([
+        'status' => 'nullable|in:pending,shipping,completed,cancelled',
+        'shipping_address' => 'nullable|string|max:255',
+        'payment_method' => 'nullable|string|max:50',
+        'total' => 'nullable|numeric|min:0'
+    ]);
+
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json(['message' => 'Order not found'], 404);
+    }
+
+    $order->update($request->only([
+        'status',
+        'shipping_address',
+        'payment_method',
+        'total'
+    ]));
+
+    return response()->json([
+        'message' => 'Order updated successfully',
+        'order' => $order
+    ]);
+}
 }

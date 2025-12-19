@@ -1,46 +1,65 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
-| Public Routes
+| PUBLIC ROUTES (KHÔNG CẦN ĐĂNG NHẬP)
 |--------------------------------------------------------------------------
 */
 
-// Đăng ký + Đăng nhập
+// Authentication
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Danh mục & sản phẩm (ai cũng xem được)
+// Categories & Products (public)
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
 
 /*
 |--------------------------------------------------------------------------
-| Protected Routes – Chỉ truy cập khi có Token
+| PROTECTED ROUTES (CẦN TOKEN – auth:sanctum)
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/cart', [CartController::class, 'add']);
     Route::get('/cart', [CartController::class, 'index']);
     Route::delete('/cart/{productId}', [CartController::class, 'remove']);
 
+    /*
+    |--------------------------------------------------------------------------
+    | ORDERS
+    | - USER  : xem đơn của mình
+    | - ADMIN : xem TẤT CẢ đơn
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/orders/{id}', [OrderController::class, 'show']);
+    Route::post('/orders/checkout', [OrderController::class, 'checkout']);
 
-    // Thanh toán & đơn hàng
-    Route::post('/checkout', [OrderController::class, 'checkout']);
-    Route::get('/orders', [OrderController::class, 'userOrders']);
+    // ADMIN: cập nhật trạng thái đơn
+    Route::put('/orders/{id}/status', [OrderController::class, 'updateStatus']);
 
-    // Đánh giá sản phẩm
+    // ✅ ADMIN: CẬP NHẬT TOÀN BỘ ĐƠN HÀNG (SỬA 405)
+    Route::put('/orders/{id}', [OrderController::class, 'update']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | REVIEWS
+    |--------------------------------------------------------------------------
+    */
     Route::post('/reviews', [ReviewController::class, 'store']);
 
-    // Đăng xuất
+    /*
+    |--------------------------------------------------------------------------
+    | LOGOUT
+    |--------------------------------------------------------------------------
+    */
     Route::post('/logout', [AuthController::class, 'logout']);
 });
