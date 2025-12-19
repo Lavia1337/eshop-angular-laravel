@@ -20,9 +20,12 @@ import { ProductDeleteComponent } from './components/product/product-delete.comp
 
 const routes: Routes = [
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Khi chạy ứng dụng, tự động chuyển đến trang sản phẩm
   { path: '', redirectTo: 'products', pathMatch: 'full' },
 =======
+=======
+>>>>>>> 698eda5 (them giam sat don hang)
   /* ===== DEFAULT ===== */
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 >>>>>>> 698eda5 (them giam sat don hang)

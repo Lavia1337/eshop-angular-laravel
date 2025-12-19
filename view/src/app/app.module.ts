@@ -9,8 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Product Components
 import { HeaderComponent } from './components/product/header.component';
+=======
+/* ===== PRODUCT ===== */
+>>>>>>> 698eda5 (them giam sat don hang)
 =======
 /* ===== PRODUCT ===== */
 >>>>>>> 698eda5 (them giam sat don hang)
@@ -40,6 +44,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   declarations: [
     AppComponent,
 
+<<<<<<< HEAD
+=======
+    /* Product */
+>>>>>>> 698eda5 (them giam sat don hang)
     ProductIndexComponent,
     ProductDetailComponent,
     ProductCreateComponent,

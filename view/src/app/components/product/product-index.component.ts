@@ -137,6 +137,7 @@ export class ProductIndexComponent implements OnInit {
   // CART
   // ======================
 <<<<<<< HEAD
+<<<<<<< HEAD
   // updateCartCount() {
   //   this.cartService.getCart().subscribe({
   //     next: (data: any) => {
@@ -147,6 +148,8 @@ export class ProductIndexComponent implements OnInit {
   //   });
   // }
 =======
+=======
+>>>>>>> 698eda5 (them giam sat don hang)
   updateCartCount(): void {
     this.cartService.getCart().subscribe({
       next: (data: any) => {
@@ -182,6 +185,7 @@ export class ProductIndexComponent implements OnInit {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   viewProduct(id?: number) {
     if (id) this.router.navigate(['/products', id]);
   }
@@ -202,6 +206,57 @@ export class ProductIndexComponent implements OnInit {
   //   this.cartItemCount = 0;
   //   this.router.navigate(['/products']);
   // }
+=======
+  // ======================
+  // NAVIGATION
+  // ======================
+  goHome(): void {
+    this.router.navigate(['/products']);
+  }
+
+  goLogin(): void {
+    this.router.navigate(['/login']);
+  }
+
+  goCart(): void {
+    this.router.navigate(['/cart']);
+  }
+
+  // ✅ PHÂN QUYỀN XEM ĐƠN HÀNG
+  goOrders(): void {
+    if (!this.isLoggedIn || !this.user) {
+      alert('Bạn cần đăng nhập để xem đơn hàng');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (this.isAdmin) {
+      this.router.navigate(['/admin/orders']);
+    } else {
+      this.router.navigate(['/orders']);
+    }
+  }
+
+  addProductModal(): void {
+    this.router.navigate(['/admin/products/create']);
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.isLoggedIn = false;
+    this.user = null;
+    this.isAdmin = false;
+    this.cartItemCount = 0;
+    this.router.navigate(['/products']);
+  }
+
+  viewProduct(id?: number): void {
+    if (id) {
+      this.router.navigate(['/products', id]);
+    }
+  }
+>>>>>>> 698eda5 (them giam sat don hang)
 =======
   // ======================
   // NAVIGATION
