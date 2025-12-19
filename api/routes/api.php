@@ -28,21 +28,9 @@ Route::apiResource('products', ProductController::class);
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth:sanctum')->group(function () {
-<<<<<<< HEAD
-
-    /*
-    |--------------------------------------------------------------------------
-    | CART
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/cart', [CartController::class, 'index']);
-    Route::post('/cart/add', [CartController::class, 'add']);
-    Route::post('/cart/remove', [CartController::class, 'remove']);
-=======
     Route::post('/cart', [CartController::class, 'add']);
     Route::get('/cart', [CartController::class, 'index']);
     Route::delete('/cart/{productId}', [CartController::class, 'remove']);
->>>>>>> 99972c2b0c7891885cc7bb9b1b6476431ac416ce
 
     /*
     |--------------------------------------------------------------------------
