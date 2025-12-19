@@ -136,30 +136,7 @@ export class ProductIndexComponent implements OnInit {
   // ======================
   // CART
   // ======================
-<<<<<<< HEAD
-  updateCartCount(): void {
-    this.cartService.getCart().subscribe({
-      next: (data: any) => {
-        const items = data.items || data;
-        this.cartItemCount = items.reduce(
-          (acc: number, item: any) => acc + item.quantity,
-          0
-        );
-      },
-      error: (err) => console.error(err)
-    });
-  }
-=======
-  // updateCartCount() {
-  //   this.cartService.getCart().subscribe({
-  //     next: (data: any) => {
-  //       const items = data.items || data;
-  //       this.cartItemCount = items.reduce((acc: number, item: any) => acc + item.quantity, 0);
-  //     },
-  //     error: (err) => console.error(err)
-  //   });
-  // }
->>>>>>> 99972c2b0c7891885cc7bb9b1b6476431ac416ce
+
 
   addToCart(productId?: number): void {
     if (!productId) return;
@@ -181,57 +158,7 @@ export class ProductIndexComponent implements OnInit {
     });
   }
 
-<<<<<<< HEAD
-  // ======================
-  // NAVIGATION
-  // ======================
-  goHome(): void {
-    this.router.navigate(['/products']);
-  }
 
-  goLogin(): void {
-    this.router.navigate(['/login']);
-  }
-
-  goCart(): void {
-    this.router.navigate(['/cart']);
-  }
-
-  // ✅ PHÂN QUYỀN XEM ĐƠN HÀNG
-  goOrders(): void {
-    if (!this.isLoggedIn || !this.user) {
-      alert('Bạn cần đăng nhập để xem đơn hàng');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    if (this.isAdmin) {
-      this.router.navigate(['/admin/orders']);
-    } else {
-      this.router.navigate(['/orders']);
-    }
-  }
-
-  addProductModal(): void {
-    this.router.navigate(['/admin/products/create']);
-  }
-
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.isLoggedIn = false;
-    this.user = null;
-    this.isAdmin = false;
-    this.cartItemCount = 0;
-    this.router.navigate(['/products']);
-  }
-
-  viewProduct(id?: number): void {
-    if (id) {
-      this.router.navigate(['/products', id]);
-    }
-  }
-=======
   viewProduct(id?: number) {
     if (id) this.router.navigate(['/products', id]);
   }
@@ -252,5 +179,5 @@ export class ProductIndexComponent implements OnInit {
   //   this.cartItemCount = 0;
   //   this.router.navigate(['/products']);
   // }
->>>>>>> 99972c2b0c7891885cc7bb9b1b6476431ac416ce
+
 }

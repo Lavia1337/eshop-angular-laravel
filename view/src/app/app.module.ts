@@ -8,12 +8,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-<<<<<<< HEAD
+
 /* ===== PRODUCT ===== */
-=======
-// Product Components
 import { HeaderComponent } from './components/product/header.component';
->>>>>>> 99972c2b0c7891885cc7bb9b1b6476431ac416ce
 import { ProductIndexComponent } from './components/product/product-index.component';
 import { ProductDetailComponent } from './components/product/product-detail.component';
 import { ProductCreateComponent } from './components/product/product-create.component';
@@ -39,12 +36,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
-<<<<<<< HEAD
-
-    /* Product */
-=======
     HeaderComponent,
->>>>>>> 99972c2b0c7891885cc7bb9b1b6476431ac416ce
     ProductIndexComponent,
     ProductDetailComponent,
     ProductCreateComponent,
@@ -78,4 +70,4 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

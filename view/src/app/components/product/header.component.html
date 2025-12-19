@@ -1,49 +1,62 @@
-<!-- HEADER START -->
-<div class="header shadow-sm py-2" style="background-color: #d70018;">
-
-  <div class="container d-flex align-items-center justify-content-between">
+<div class="header sticky-top">
+  <div class="container d-flex align-items-center justify-content-between py-2">
 
     <!-- Logo -->
-    <div class="logo d-flex align-items-center" style="cursor: pointer;" (click)="goHome()">
-      <img src="../../../assets/favicon_io/favicon-16x16.png" height="35" />
+    <div class="logo me-4" (click)="goHome()">
+      <img src="../../../assets/favicon_io/favicon-16x16.png" height="35" alt="TechStore" />
+      <span class="logo-text d-none d-md-block">TechStore</span>
     </div>
 
-    <!-- Search -->
-    <div class="search flex-grow-1 mx-3">
-      <input class="form-control" type="text" placeholder="Bạn muốn mua gì hôm nay?">
-    </div>
-
-    <!-- KHI CHƯA ĐĂNG NHẬP -->
-    <ng-container *ngIf="!isLoggedIn">
-      <button class="btn btn-light me-2" (click)="goLogin()">Đăng nhập</button>
-      <button class="btn btn-outline-light" (click)="goRegister()">Đăng ký</button>
-    </ng-container>
-
-    <!-- KHI ĐÃ ĐĂNG NHẬP -->
-    <ng-container *ngIf="isLoggedIn">
-      <button class="btn btn-light me-2 position-relative" (click)="goCart()">
-        🛒 Giỏ hàng
-
-        <span *ngIf="cartItemCount > 0"
-          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark border border-light">
-          {{ cartItemCount }}
-        </span>
-      </button>
-
-      <div class="text-white fw-bold">
-        Xin chào, {{ user?.name }}
+    <div class="search-box flex-grow-1 me-4" *ngIf="!isAdmin && isLoggedIn">
+      <div class="input-group">
+        <input type="text" class="form-control search-input" placeholder="Bạn cần tìm gì?">
       </div>
+    </div>
 
-      <button class="btn btn-outline-light ms-3" (click)="logout()">Đăng xuất</button>
-    </ng-container>
+    <div class="flex-grow-1" *ngIf="isAdmin"></div>
 
-    <!-- 🔥 NÚT THÊM SẢN PHẨM CHỈ HIỆN CHO ADMIN -->
-    <div class="ms-3" *ngIf="isAdmin">
-      <a routerLink="/admin/products/create" class="btn btn-warning fw-bold">
-        + Thêm sản phẩm mới
-      </a>
+    <div class="d-flex align-items-center gap-2">
+
+      <ng-container *ngIf="!isLoggedIn">
+        <button class="btn btn-header btn-glass" (click)="goRegister()">Đăng ký</button>
+        <button class="btn btn-header btn-white" (click)="goLogin()">Đăng nhập</button>
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+
+        <button *ngIf="!isAdmin" class="btn btn-header btn-glass position-relative icon-btn" (click)="goCart()"
+          title="Giỏ hàng">
+          🛒 <span class="d-none d-lg-inline">Giỏ hàng</span>
+          <span *ngIf="cartItemCount > 0" class="cart-badge badge rounded-pill">
+            {{ cartItemCount }}
+          </span>
+        </button>
+
+        <button *ngIf="!isAdmin" (click)="goOrders()" class="btn btn-header btn-glass" title="Đơn hàng">
+          📦 <span class="d-none d-lg-inline">Đơn hàng</span>
+        </button>
+
+        <ng-container *ngIf="isAdmin">
+          <button (click)="goOrders()" class="btn btn-header btn-glass">
+            📦 Quản lý đơn hàng
+          </button>
+          <a routerLink="/admin/products/create" class="btn btn-header btn-warning text-dark fw-bold">
+            ➕ Thêm sản phẩm
+          </a>
+        </ng-container>
+
+        <div class="user-info d-none d-xl-block ms-2 text-white text-end">
+          <small class="d-block opacity-75" style="font-size: 11px;">Xin chào,</small>
+          <span class="fw-bold" style="font-size: 14px;">{{ user?.name }}</span>
+        </div>
+
+        <button class="btn btn-header btn-glass ms-2" (click)="logout()">
+          Đăng xuất
+        </button>
+
+      </ng-container>
+
     </div>
 
   </div>
 </div>
-<!-- HEADER END -->

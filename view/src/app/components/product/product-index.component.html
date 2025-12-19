@@ -1,16 +1,9 @@
 <!-- HEADER -->
 <app-header></app-header>
 
-<<<<<<< HEAD
-    <a (click)="goHome()"
-       class="text-white text-decoration-none fw-bold fs-4 me-4"
-       style="cursor: pointer;">
-      STORE
-    </a>
-=======
+
 <div class="main-wrapper py-4" style="background-color: #f4f6f8; min-height: 100vh;">
   <div class="container">
->>>>>>> 99972c2b0c7891885cc7bb9b1b6476431ac416ce
 
     <div class="row g-3 mb-4">
 
@@ -33,59 +26,6 @@
         </div>
       </div>
 
-<<<<<<< HEAD
-      <ng-container *ngIf="isLoggedIn">
-
-<!-- USER: Đơn hàng cá nhân -->
-<button *ngIf="!isAdmin"
-        (click)="goOrders()"
-        class="btn btn-light fw-bold">
-  📦 Đơn hàng của tôi
-</button>
-
-<!-- ADMIN: Quản lý đơn hàng -->
-<button *ngIf="isAdmin"
-        (click)="goOrders()"
-        class="btn btn-danger fw-bold">
-  📦 Quản lý đơn hàng
-</button>
-
-
-        <!-- 🛒 GIỎ HÀNG -->
-        <button *ngIf="!isAdmin"
-                (click)="goCart()"
-                class="btn btn-cart-custom position-relative fw-bold">
-          🛒 Giỏ hàng
-          <span *ngIf="cartItemCount > 0"
-                class="position-absolute top-0 start-100 translate-middle
-                       badge rounded-pill bg-warning text-dark border border-light">
-            {{ cartItemCount }}
-          </span>
-        </button>
-
-        <!-- ADMIN -->
-        <button *ngIf="isAdmin"
-                (click)="addProductModal()"
-                class="btn btn-warning fw-bold text-dark">
-          ➕ Thêm sản phẩm
-        </button>
-
-      </ng-container>
-
-      <!-- AUTH -->
-      <button *ngIf="!isLoggedIn"
-              (click)="goLogin()"
-              class="btn btn-light text-danger fw-bold">
-        Đăng nhập
-      </button>
-
-      <button *ngIf="isLoggedIn"
-              (click)="logout()"
-              class="btn btn-light border-light">
-        Đăng xuất
-      </button>
-
-=======
       <div class="col-lg-6 col-md-12">
         <div id="promoCarousel" class="carousel slide shadow-sm rounded overflow-hidden mb-2" data-bs-ride="carousel"
           data-bs-interval="3000">
@@ -130,7 +70,6 @@
         </div>
       </div>
 
->>>>>>> 99972c2b0c7891885cc7bb9b1b6476431ac416ce
     </div>
     <div class="product-section">
       <div class="d-flex justify-content-between align-items-center mb-3">
@@ -201,16 +140,13 @@
   </div>
 </div>
 
-<<<<<<< HEAD
-=======
+
 <ng-template #loading>
   <div class="text-center py-5">
     <div class="spinner-border text-danger" role="status"></div>
     <p class="mt-2 text-muted">Đang tải sản phẩm...</p>
   </div>
 </ng-template>
-
->>>>>>> 99972c2b0c7891885cc7bb9b1b6476431ac416ce
 
 <!-- TOP BANNER -->
 <!-- <div class="top-banner text-center text-white py-1" style="background: #000;">

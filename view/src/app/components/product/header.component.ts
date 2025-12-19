@@ -75,4 +75,21 @@ export class HeaderComponent implements OnInit {
   goCart() {
     this.router.navigate(['/cart']);
   }
+
+  // ✅ PHÂN QUYỀN XEM ĐƠN HÀNG
+  goOrders(): void {
+    if (!this.isLoggedIn || !this.user) {
+      alert('Bạn cần đăng nhập để xem đơn hàng');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (this.isAdmin) {
+      this.router.navigate(['/admin/orders']);
+    } else {
+      this.router.navigate(['/orders']);
+    }
+  }
 }
+
+

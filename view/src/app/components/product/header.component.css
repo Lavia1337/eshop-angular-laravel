@@ -1,62 +1,92 @@
-/* Header Component Styles */
+/* --- HEADER CONTAINER --- */
 .header {
   background-color: #d70018;
-  padding: 0.5rem 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  z-index: 1000;
 }
 
+/* --- LOGO --- */
 .logo {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .logo img {
-  height: 35px;
+  height: 38px;
+  transition: transform 0.3s;
 }
 
-.search input {
-  border-radius: 10px;
-  padding: 12px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  width: 100%;
+.logo:hover img {
+  transform: scale(1.05);
 }
 
-.btn {
-  border-radius: 10px;
-  padding: 12px 20px;
-  font-size: 15px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-light {
-  background-color: #fff;
-  color: #000;
-  border: 1px solid #ccc;
-  transition: all 0.3s ease;
-}
-
-.btn-light:hover {
-  border-color: #ff9900;
-  /* Viền đổi màu cam */
-  box-shadow: 0 0 10px #ff9900;
-  /* Hiệu ứng ửng sáng (glow) xung quanh màu cam */
-  color: #000;
-  /* Giữ nguyên chữ đen */
-}
-
-.btn-outline-light {
-  background-color: transparent;
+.logo-text {
   color: #fff;
-  border: 1px solid #fff;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.btn-outline-light:hover {
+/* --- SEARCH BAR --- */
+.search-box {
+  max-width: 500px;
+}
+
+.search-input {
+  border-radius: 25px;
+  /* Bo tròn cả 4 góc */
+  border: none;
+  /* Chỉnh lại padding đều 2 bên (trước đây bên phải chừa chỗ cho nút) */
+  padding: 10px 20px;
+  font-size: 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* --- BUTTON STYLES --- */
+.btn-header {
+  border-radius: 8px;
+  padding: 8px 15px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  /* Giữ chữ trên 1 dòng */
+}
+
+/* Nút trắng (Đăng nhập) */
+.btn-white {
   background-color: #fff;
   color: #d70018;
 }
 
+.btn-white:hover {
+  background-color: #f1f1f1;
+  transform: translateY(-1px);
+}
+
+/* Nút kính mờ (Dùng cho hầu hết các nút chức năng) */
+.btn-glass {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Thêm viền mờ nhẹ cho đẹp */
+}
+
+.btn-glass:hover {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Nút Warning (Thêm sản phẩm) */
 .btn-warning {
   background-color: #ffc107;
   color: #000;
@@ -66,18 +96,31 @@
   background-color: #e0a800;
 }
 
-.text-white {
-  color: #fff;
-}
-
-.fw-bold {
+/* --- CART BADGE --- */
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ffc107;
+  color: #000;
+  font-size: 10px;
   font-weight: bold;
+  border: 2px solid #d70018;
+  padding: 4px 6px;
 }
 
-.me-2 {
-  margin-right: 0.5rem;
-}
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .search-box {
+    display: none;
+  }
 
-.ms-3 {
-  margin-left: 1rem;
+  .logo-text {
+    display: none;
+  }
+
+  .btn-header {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 }
