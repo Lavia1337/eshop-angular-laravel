@@ -1,0 +1,88 @@
+<div class="order-page">
+
+  <!-- HEADER -->
+  <div class="order-header">
+    <h2>Order Tracking</h2>
+  </div>
+
+  <!-- TABLE -->
+  <div class="order-card">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+
+          <!-- CHỈ ADMIN MỚI THẤY USER -->
+          <th *ngIf="isAdmin">User</th>
+
+          <th>Total</th>
+          <th>Status</th>
+          <th>Date</th>
+
+          <th *ngIf="isAdmin">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <!-- ORDER ID -->
+          <td>#{{ order.id }}</td>
+
+          <!-- USER NAME (ADMIN ONLY – SAFE) -->
+          <td *ngIf="isAdmin" class="username">
+            {{ order.user?.name ?? ('User #' + order.user_id) }}
+          </td>
+
+          <!-- TOTAL -->
+          <td class="price">
+            ${{ order.total }}
+          </td>
+
+          <!-- STATUS -->
+          <td>
+            <span [class]="getStatusClass(order.status)">
+              {{ order.status | titlecase }}
+            </span>
+          </td>
+
+          <!-- DATE -->
+          <td>
+            {{ order.created_at | date:'dd/MM/yyyy HH:mm' }}
+          </td>
+
+          <!-- ADMIN ACTION -->
+          <td *ngIf="isAdmin">
+            <button
+              class="btn-edit"
+              *ngIf="editingOrderId !== order.id"
+              (click)="startEdit(order)"
+            >
+              Edit
+            </button>
+
+            <div
+              class="edit-box"
+              *ngIf="editingOrderId === order.id"
+            >
+              <select [(ngModel)]="editData.status">
+                <option
+                  *ngFor="let s of statusList"
+                  [value]="s"
+                >
+                  {{ s | titlecase }}
+                </option>
+              </select>
+
+              <button class="btn-save" (click)="saveEdit(order)">
+                Save
+              </button>
+              <button class="btn-cancel" (click)="cancelEdit()">
+                Cancel
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

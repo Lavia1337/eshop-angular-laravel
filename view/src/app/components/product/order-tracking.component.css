@@ -1,0 +1,121 @@
+.order-page {
+  padding: 24px;
+  background: #f8f9fa;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* HEADER */
+.order-header {
+  margin-bottom: 18px;
+}
+
+.order-header h2 {
+  color: #c62828;
+  font-weight: 700;
+}
+
+/* CARD */
+.order-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #c62828;
+  color: white;
+}
+
+th, td {
+  padding: 14px 16px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+  background: #fff5f5;
+}
+
+/* USER NAME */
+.username {
+  font-weight: 600;
+  color: #333;
+}
+
+/* PRICE */
+.price {
+  font-weight: 600;
+}
+
+/* BADGES */
+.badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-pending {
+  background: #ffe0e0;
+  color: #c62828;
+}
+
+.badge-shipping {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.badge-completed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge-cancelled {
+  background: #fce4ec;
+  color: #ad1457;
+}
+
+/* ACTION */
+.btn-edit {
+  background: transparent;
+  border: 1px solid #c62828;
+  color: #c62828;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-edit:hover {
+  background: #c62828;
+  color: #fff;
+}
+
+.edit-box {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-save {
+  background: #c62828;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.btn-cancel {
+  background: #eee;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
