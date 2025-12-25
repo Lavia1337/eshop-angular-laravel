@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Product Components
 import { HeaderComponent } from './components/product/header.component';
 =======
@@ -21,6 +22,8 @@ import { HeaderComponent } from './components/product/header.component';
 >>>>>>> 698eda5 (them giam sat don hang)
 =======
 
+=======
+>>>>>>> deb530a (final fix)
 /* ===== PRODUCT ===== */
 import { HeaderComponent } from './components/product/header.component';
 >>>>>>> 13998e8 (Resolve merge conflicts in routing and component files; update header and product index components for improved navigation and styling.)
@@ -40,8 +43,6 @@ import { RegisterComponent } from './components/auth/Register.component';
 
 /* ===== ORDERS ===== */
 import { OrderTrackingComponent } from './components/product/order-tracking.component';
-// Nếu bạn tách folder orders sau này:
-// import { OrderTrackingComponent } from './components/orders/order-tracking.component';
 
 /* ===== INTERCEPTOR ===== */
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -50,12 +51,17 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   declarations: [
     AppComponent,
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 =======
     /* Product */
 >>>>>>> 698eda5 (them giam sat don hang)
 =======
+=======
+
+    /* Product */
+>>>>>>> deb530a (final fix)
     HeaderComponent,
 >>>>>>> 13998e8 (Resolve merge conflicts in routing and component files; update header and product index components for improved navigation and styling.)
     ProductIndexComponent,
@@ -64,7 +70,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ProductEditComponent,
     ProductDeleteComponent,
 
-    /* Cart */
+    /* Cart & Checkout */
     CartComponent,
     CheckoutComponent,
 
@@ -78,8 +84,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
