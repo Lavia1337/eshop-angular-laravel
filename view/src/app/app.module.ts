@@ -8,7 +8,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
 /* ===== PRODUCT ===== */
 import { HeaderComponent } from './components/product/header.component';
 import { ProductIndexComponent } from './components/product/product-index.component';
@@ -27,8 +26,6 @@ import { RegisterComponent } from './components/auth/Register.component';
 
 /* ===== ORDERS ===== */
 import { OrderTrackingComponent } from './components/product/order-tracking.component';
-// Nếu bạn tách folder orders sau này:
-// import { OrderTrackingComponent } from './components/orders/order-tracking.component';
 
 /* ===== INTERCEPTOR ===== */
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -36,6 +33,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
+
+    /* Product */
     HeaderComponent,
     ProductIndexComponent,
     ProductDetailComponent,
@@ -43,7 +42,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ProductEditComponent,
     ProductDeleteComponent,
 
-    /* Cart */
+    /* Cart & Checkout */
     CartComponent,
     CheckoutComponent,
 
@@ -57,8 +56,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),

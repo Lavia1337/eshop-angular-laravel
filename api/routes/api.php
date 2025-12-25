@@ -29,12 +29,17 @@ Route::apiResource('products', ProductController::class);
 */
 Route::middleware('auth:sanctum')->group(function () {
 
+    // ======================
     // CART
+    // ======================
     Route::post('/cart', [CartController::class, 'add']);
     Route::get('/cart', [CartController::class, 'index']);
+    Route::put('/cart/update', [CartController::class, 'update']); // ✅ FIX
     Route::delete('/cart/{productId}', [CartController::class, 'remove']);
 
+    // ======================
     // ORDERS
+    // ======================
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::post('/orders/checkout', [OrderController::class, 'checkout']);
@@ -44,12 +49,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // ======================
     // PRODUCT IMAGES (ADMIN)
     // ======================
-    Route::post(
-        '/products/{id}/images/url',
-        [ProductController::class, 'storeImageUrl']
-    );
+    Route::post('/products/{id}/images/url', [ProductController::class, 'storeImageUrl']);
 
+    // ======================
     // REVIEWS
+    // ======================
     Route::post('/reviews', [ReviewController::class, 'store']);
 
     // LOGOUT
