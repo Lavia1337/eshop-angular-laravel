@@ -12,7 +12,11 @@ import { AppComponent } from './app.component';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Product Components
+=======
+/* ===== PRODUCT ===== */
+>>>>>>> deb530a88034b9a5841ab402876465145cc07c5b
 import { HeaderComponent } from './components/product/header.component';
 =======
 /* ===== PRODUCT ===== */
@@ -52,6 +56,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     AppComponent,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 =======
@@ -62,6 +67,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 
     /* Product */
 >>>>>>> deb530a (final fix)
+=======
+
+    /* Product */
+>>>>>>> deb530a88034b9a5841ab402876465145cc07c5b
     HeaderComponent,
 >>>>>>> 13998e8 (Resolve merge conflicts in routing and component files; update header and product index components for improved navigation and styling.)
     ProductIndexComponent,

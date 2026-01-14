@@ -131,6 +131,7 @@ export class ProductIndexComponent implements OnInit {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // updateCartCount() {
   //   this.cartService.getCart().subscribe({
   //     next: (data: any) => {
@@ -162,6 +163,8 @@ export class ProductIndexComponent implements OnInit {
 
 =======
 >>>>>>> 2829bbb (them giam sat don hang)
+=======
+>>>>>>> deb530a88034b9a5841ab402876465145cc07c5b
   addToCart(productId?: number): void {
     if (!productId) return;
 
@@ -178,6 +181,7 @@ export class ProductIndexComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -328,4 +332,9 @@ export class ProductIndexComponent implements OnInit {
     if (id) this.router.navigate(['/products', id]);
   }
 >>>>>>> 2829bbb (them giam sat don hang)
+=======
+  viewProduct(id?: number): void {
+    if (id) this.router.navigate(['/products', id]);
+  }
+>>>>>>> deb530a88034b9a5841ab402876465145cc07c5b
 }

@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     /*
     |--------------------------------------------------------------------------
     | CART
@@ -40,15 +41,21 @@ Route::middleware('auth:sanctum')->group(function () {
 =======
     // ======================
 >>>>>>> deb530a (final fix)
+=======
+    // ======================
+>>>>>>> deb530a88034b9a5841ab402876465145cc07c5b
     // CART
     // ======================
     Route::post('/cart', [CartController::class, 'add']);
 >>>>>>> 2829bbb (them giam sat don hang)
     Route::get('/cart', [CartController::class, 'index']);
 <<<<<<< HEAD
+<<<<<<< HEAD
     Route::post('/cart/add', [CartController::class, 'add']);
     Route::post('/cart/remove', [CartController::class, 'remove']);
 =======
+=======
+>>>>>>> deb530a88034b9a5841ab402876465145cc07c5b
     Route::put('/cart/update', [CartController::class, 'update']); // ✅ FIX
     Route::delete('/cart/{productId}', [CartController::class, 'remove']);
 >>>>>>> deb530a (final fix)
