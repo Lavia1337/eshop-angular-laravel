@@ -1,105 +1,178 @@
 <!-- HEADER -->
 <app-header></app-header>
 
-<div class="main-wrapper py-4" style="background-color: #f4f6f8; min-height: 100vh;">
+<div class="main-wrapper py-4 bg-light min-vh-100">
   <div class="container">
 
+    <!-- ================= TOP SECTION ================= -->
     <div class="row g-3 mb-4">
 
       <!-- CATEGORY -->
-      <div class="col-lg-3 d-none d-lg-block">
-        <div class="category-box bg-white rounded shadow-sm h-100">
+      <aside class="col-lg-3 d-none d-lg-block">
+        <div class="bg-white rounded shadow-sm h-100">
           <h6 class="fw-bold p-3 border-bottom m-0">
             📂 DANH MỤC SẢN PHẨM
           </h6>
-          <ul class="category-list list-unstyled m-0 p-2">
-            <li (click)="filterByCategory(null)" [class.active]="selectedCategory === 0">
+
+          <ul class="list-unstyled m-0 p-2 category-list">
+            <li
+              (click)="filterByCategory(null)"
+              [class.active]="selectedCategory === 0">
               📱 Tất cả sản phẩm
             </li>
-            <li *ngFor="let c of categories"
-                (click)="filterByCategory(c.id ?? 0)"
-                [class.active]="selectedCategory === c.id">
+
+            <li
+              *ngFor="let c of categories"
+              (click)="filterByCategory(c.id ?? 0)"
+              [class.active]="selectedCategory === c.id">
               🔹 {{ c.name }}
             </li>
           </ul>
         </div>
-      </div>
+      </aside>
 
       <!-- SLIDER -->
-      <div class="col-lg-6 col-md-12">
-        <div id="promoCarousel"
-             class="carousel slide shadow-sm rounded overflow-hidden mb-2"
-             data-bs-ride="carousel"
-             data-bs-interval="3000">
+      <section class="col-lg-6 col-md-12">
+        <div
+          id="promoCarousel"
+          class="carousel slide shadow-sm rounded overflow-hidden mb-2"
+          data-bs-ride="carousel"
+          data-bs-interval="3000">
 
           <div class="carousel-indicators">
-            <button *ngFor="let img of sliderImages; let i = index"
-                    type="button"
-                    data-bs-target="#promoCarousel"
-                    [attr.data-bs-slide-to]="i"
-                    [class.active]="i === 0">
+            <button
+              *ngFor="let img of sliderImages; let i = index"
+              type="button"
+              data-bs-target="#promoCarousel"
+              [attr.data-bs-slide-to]="i"
+              [class.active]="i === 0">
             </button>
           </div>
 
           <div class="carousel-inner">
-            <div *ngFor="let img of sliderImages; let i = index"
-                 class="carousel-item"
-                 [class.active]="i === 0">
-              <img [src]="img" class="d-block w-100" />
+            <div
+              *ngFor="let img of sliderImages; let i = index"
+              class="carousel-item"
+              [class.active]="i === 0">
+              <img [src]="img" class="d-block w-100">
             </div>
           </div>
         </div>
 
         <div class="row g-2">
           <div class="col-6" *ngFor="let subImg of subBanners">
-            <img [src]="subImg" class="img-fluid rounded shadow-sm" />
+            <img [src]="subImg" class="img-fluid rounded shadow-sm">
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- PROMOTION -->
-      <div class="col-lg-3 d-none d-lg-block">
-        <div class="bg-white rounded shadow-sm h-100 p-3">
-          <h6 class="fw-bold text-danger border-bottom pb-2">🔥 Ưu đãi Hot</h6>
-          <ul class="list-unstyled small">
-            <li>✔ Thu cũ đổi mới - Trợ giá 1tr</li>
-            <li>✔ Giảm 50% bảo hành</li>
-            <li>✔ Phụ kiện giảm 20%</li>
-          </ul>
-        </div>
-      </div>
+<!-- PROMOTION -->
+<aside class="col-lg-3 d-none d-lg-block">
+  <div class="bg-white rounded shadow-sm h-100 p-3 promotion-box">
+
+    <div class="promotion-title mb-3">
+      <span class="dot"></span>
+      <span class="text-danger fw-bold text-uppercase">Ưu đãi hot</span>
+    </div>
+
+    <ul class="promotion-list">
+      <li>
+        <span class="promo-badge badge-new">NEW</span>
+        Thu cũ lên đời – Trợ giá 1tr
+      </li>
+      <li>
+        <span class="promo-badge badge-hot">HOT</span>
+        Giảm 50% gói bảo hành
+      </li>
+      <li>
+        <span class="promo-badge badge-sale">SALE</span>
+        Phụ kiện mua kèm giảm 20%
+      </li>
+      <li>
+        <span class="promo-badge badge-vip">VIP</span>
+        Trả góp 0% lãi suất
+      </li>
+    </ul>
+
+    <!-- Logo nhỏ dưới cùng -->
+    <div class="promo-logo">
+      <div class="logo-box">S</div>
+    </div>
+
+  </div>
+</aside>
 
     </div>
 
-    <!-- PRODUCTS -->
-    <div *ngIf="products.length > 0; else loading" class="row g-3">
+    <!-- ================= PRODUCT LIST ================= -->
+    <section>
 
-      <div *ngFor="let product of products"
-           class="col-xl-3 col-lg-4 col-md-6 col-6">
+      <h5 class="fw-bold text-uppercase mb-3">
+        Sản phẩm nổi bật
+      </h5>
 
-        <div class="card h-100 shadow-sm">
+      <div *ngIf="products.length > 0; else loading" class="row g-3">
 
-          <img [src]="getMainImage(product)"
-               class="card-img-top"
-               (click)="viewProduct(product.id)" />
+        <div
+          *ngFor="let product of products"
+          class="col-xl-2 col-lg-3 col-md-4 col-6">
 
-          <div class="card-body d-flex flex-column">
-            <h6 class="fw-bold" (click)="viewProduct(product.id)">
-              {{ product.name }}
-            </h6>
+          <div class="product-card">
 
-            <div class="mt-auto">
-              <button class="btn btn-danger btn-sm w-100"
-                      (click)="addToCart(product.id)">
-                Thêm vào giỏ
-              </button>
+            <!-- DISCOUNT -->
+            <span class="discount-badge">-15%</span>
+
+            <!-- IMAGE -->
+            <div class="product-image" (click)="viewProduct(product.id)">
+              <img [src]="getMainImage(product)" alt="{{ product.name }}">
             </div>
+
+            <!-- NAME -->
+            <div class="product-name">
+              {{ product.name }}
+            </div>
+
+            <!-- PRICE -->
+            <div class="price-box">
+              <div class="price-new">
+                {{ product.price | currency:'VND' }}
+              </div>
+              <div class="price-old">
+                {{ product.price * 1.15 | currency:'VND' }}
+              </div>
+            </div>
+
+            <!-- STATUS -->
+            <span
+              *ngIf="(product.quantity ?? 0) <= 0"
+              class="status-out">
+              ✖ Hết hàng
+            </span>
+
+            <!-- QTY -->
+            <div class="qty-box">
+              <span>SL:</span>
+              <input type="number" value="1" disabled>
+            </div>
+
+            <!-- BUTTONS -->
+            <button
+              class="btn-cart"
+              [disabled]="(product.quantity ?? 0) <= 0">
+              🛒 Thêm vào giỏ hàng
+            </button>
+
+            <button
+              class="btn-detail"
+              (click)="viewProduct(product.id)">
+              Xem chi tiết
+            </button>
+
           </div>
-
         </div>
-      </div>
 
-    </div>
+      </div>
+    </section>
 
   </div>
 </div>

@@ -36,8 +36,8 @@ export class ProductIndexComponent implements OnInit {
   ];
 
   subBanners: string[] = [
-    'https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/a17-right-1125.png',
-    'https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/macbook-giao-xa.png'
+    'https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/galaxy-a17-5g-0126-RIGHT.png',
+    'https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:50/plain/https://dashboard.cellphones.com.vn/storage/macbook-giao-xa-2026.png'
   ];
 
   constructor(
